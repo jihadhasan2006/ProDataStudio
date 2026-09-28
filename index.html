@@ -646,15 +646,184 @@
 <div id="toast">✅ Copied</div>
 
 <script>
+    // ── COMPLETE OFFLINE DATABASE (NAMES & USERNAMES) ──
     const offlineData = {
-        bd: { male_first: [], female_first: [], last: [], username: [] },
-        usa: { male_first: [], female_first: [], last: [], username: [] },
-        uk: { male_first: [], female_first: [], last: [], username: [] },
-        fr: { male_first: [], female_first: [], last: [], username: [] },
-        in: { male_first: [], female_first: [], last: [], username: [] },
-        cn: { male_first: [], female_first: [], last: [], username: [] }
+        bd: {
+            male_first: [
+                "Tanvir", "Rakib", "Sajid", "Fahim", "Naim", "Arif", "Zahid", "Mahmud", "Shakil", "Rohan",
+                "Mehedi", "Tarek", "Imran", "Sabbir", "Ashik", "Rayhan", "Nadim", "farhan", "Tamim", "Arafat",
+                "Rifat", "Siam", "Abir", "Nayeem", "Hasib", "Jubayer", "Maruf", "Nasim", "Shuvo", "Tawsif"
+            ],
+            female_first: [
+                "Nusrat", "Sadia", "Tasnim", "Farzana", "Mim", "Sumaiya", "Jannat", "Tanjina", "Samia", "Lamia",
+                "Mahिया", "Anika", "Nadia", "Raisa", "maliha", "Humaira", "Sanjida", "Afia", "Tahmina", "Sharmin",
+                "Faria", "Sabrina", "Laboni", "Nabila", "Ishrat", "Tania", "Rupa", "Puja", "promi", "Mithila"
+            ],
+            last: [
+                "Ahmed", "Hossain", "Islam", "Rahman", "Khan", "Hasan", "Chowdhury", "Mahmud", "Alam", "Sikder",
+                "Talukder", "Bhuiyan", "Sarkar", "Uddin", "Mia", "Sheikh", "Khandaker", "patwary", "Howlader", "Munshi",
+                "Kabir", "Azad", "Bashar", "haque", "Karim", "Latif", "molla", "Mannan", "Rana", "Siddique"
+            ],
+            username: [
+                "tanvir_vibes01", "rakib_official99", "sajid_bro_bd", "fahim_x_zone", "naim_writes24",
+                "arif_insights", "zahid_spark", "mahmud_chronicles", "shakil_wave", "rohan_bd_07",
+                "mehedi_pulse", "tarek_horizon", "imran_nexus", "sabbir_dreams", "ashik_pixel",
+                "rayhan_orbit", "nadim_diaries", "farhan_fusion", "tamim_legacy", "arafat_echo",
+                "rifat_glow", "siam_zenith", "abir_breeze", "nayeem_quest", "hasib_craft",
+                "jubayer_flame", "maruf_drift", "nasim_vortex", "shuvo_sphere", "tawsif_prime"
+            ]
+        },
+        usa: {
+            male_first: [
+                "Liam", "Noah", "Oliver", "Elijah", "James", "William", "Benjamin", "Lucas", "Henry", "Theodore",
+                "Jack", "Levi", "Alexander", "Jackson", "Mateo", "Daniel", "Michael", "Mason", "Sebastian", "Ethan",
+                "Logan", "Owen", "Samuel", "Jacob", "Asher", "Aiden", "John", "Joseph", "Wyatt", "David"
+            ],
+            female_first: [
+                "Olivia", "Emma", "Charlotte", "Amelia", "Sophia", "Isabella", "Ava", "Mia", "Evelyn", "Luna",
+                "Harper", "Camila", "Sofia", "Scarlett", "Elizabeth", "Eleanor", "Emily", "Chloe", "Mila", "Violet",
+                "Penelope", "Gianna", "Aria", "Abigail", "Ella", "Avery", "Hazel", "Nora", "Layla", "Lily"
+            ],
+            last: [
+                "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
+                "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
+                "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson"
+            ],
+            username: [
+                "liam_brooks92", "noah_vance_us", "oliver_crest", "elijah_miles04", "james_harper_x",
+                "will_sterling", "ben_knox_live", "lucas_reed88", "henry_cole_ny", "theo_west_la",
+                "jack_dawson21", "levi_turner_hq", "alex_mercer_us", "jax_foster99", "mateo_cruz_tx",
+                "dan_blake_pro", "mike_palmer01", "mason_grant_v", "seb_knight77", "ethan_hayes_co"
+            ]
+        },
+        uk: {
+            male_first: [
+                "Arthur", "George", "Harry", "Charlie", "Leo", "Finley", "Alfie", "Freddie", "Archie", "Theo",
+                "Oscar", "Edward", "Toby", "Jude", "Rory", "Tommy", "Hugo", "Callum", "Harrison", "Reuben",
+                "Louie", "Barnaby", "Jasper", "Felix", "Ollie", "Stanley", "albie", "angus", "Caleb", "Dylan"
+            ],
+            female_first: [
+                "Isla", "Freya", "Florence", "Willow", "Rosie", "Grace", "Daisy", "Sienna", "Poppy", "Elsie",
+                "Phoebe", "Evie", "Matilda", "Maisie", "Imogen", "Alice", "Ruby", "Millie", "Esme", "Maya",
+                "Bonnie", "Harriet", "molly", "Bella", "Zara", "Erin", "Mabel", "Robyn", "Holly", "Clara"
+            ],
+            last: [
+                "Davies", "Evans", "Walker", "Wright", "Hall", "Green", "Wood", "bailey", "Cooper", "Ward",
+                "Turner", "Watson", "Morgan", "Bell", "Hunter", "campbell", "Stewart", "Murray", "Fletcher", "Bennett",
+                "Shaw", "marshall", "Simpson", "Richards", "Ellis", "Graham", "Wilkinson", "chapman", "Palmer", "Knight"
+            ],
+            username: [
+                "arthur_ldn01", "george_uk_vibe", "harry_mayfair", "charlie_thames", "leo_albion88",
+                "finley_bristol", "alfie_york_x", "freddie_kent", "archie_surrey", "theo_cambridge",
+                "oscar_oxford99", "edward_soho", "toby_leeds07", "jude_mersey", "rory_highland"
+            ]
+        },
+        fr: {
+            male_first: [
+                "Gabriel", "Leo", "Raphael", "Louis", "Maël", "Jules", "Adam", "Lucas", "Hugo", "Sacha",
+                "Liam", "Paul", "Ethan", "Nolan", "Timéo", "Mohamed", "Aaron", "gabin", "enzo", "Victor",
+                "Mathis", "Antoine", "Valentin", "Clément", "baptiste", "Maxime", "Alexandre", "Théo", "Romain", "Bastien"
+            ],
+            female_first: [
+                "Jade", "Louise", "Ambre", "Alba", "Emma", "Rose", "Alice", "Romy", "Anna", "Lina",
+                "Chloé", "Mia", "Léa", "Inès", "Julia", "Iris", "Giulia", "Agathe", "Juliette", "Lou",
+                "Manon", "Camille", "Sarah", "Eva", "Zoé", "Nina", "Jeanne", "Charlotte", "Léonie", "Adèle"
+            ],
+            last: [
+                "Martin", "Bernard", "Thomas", "Petit", "Robert", "Richard", "Durand", "Dubois", "Moreau", "Laurent",
+                "Simon", "Michel", "Lefebvre", "Leroy", "Roux", "David", "Bertrand", "Morel", "Fournier", "Girard",
+                "Bonnet", "Dupont", "Lambert", "Fontaine", "Rousseau", "Vincent", "Muller", "Lefevre", "Faure", "Andre"
+            ],
+            username: [
+                "gabriel_paris75", "leo_lumiere", "raphael_seine", "louis_azur06", "mael_lyon69",
+                "jules_bordeaux", "adam_riviera", "lucas_montmartre", "hugo_atelier", "sacha_etoile",
+                "paul_verlaine_x", "ethan_marseille", "nolan_loire", "timeo_alpes", "victor_versailles"
+            ]
+        },
+        in: {
+            male_first: [
+                "Aarav", "Vivaan", "Aditya", "Vihaan", "Arjun", "Sai", "Reyansh", "Ayaan", "Krishna", "Ishaan",
+                "Shaurya", "Atharv", "Advik", "Pranav", "Advaith", "Aaryan", "Dhruv", "Kabir", "Ritvik", "Aarush",
+                "Kian", "Darsh", "Veer", "Rohan", "Rahul", "Siddharth", "Karan", "Vikram", "Nikhil", "Rishabh"
+            ],
+            female_first: [
+                "Saanvi", "Aanya", "Aadhya", "Aaradhya", "Ananya", "Pari", "Anika", "Navya", "Diya", "Myra",
+                "Sara", "Ira", "Ahana", "Anvi", "Prisha", "Riya", "Aarohi", "Meera", "Pooja", "Neha",
+                "Shreya", "Kavya", "Nisha", "Tanvi", "Sneha", "Kritika", "Divya", "Aditi", "Tanya", "Ishita"
+            ],
+            last: [
+                "Sharma", "Verma", "Gupta", "Malhotra", "Bhatia", "Saxena", "Kapoor", "Singh", "Patel", "Reddy",
+                "Nair", "Iyer", "Chatterjee", "Mukherjee", "Banerjee", "Deshmukh", "Joshi", "Kulkarni", "Mehta", "Shah",
+                "Agarwal", "Mishra", "Pandey", "Tiwari", "Chauhan", "Rathore", "Yadav", "Sinha", "dubey", "sen"
+            ],
+            username: [
+                "aarav_sharma09", "vivaan_ind_x", "aditya_vibes24", "vihaan_spark", "arjun_pulse99",
+                "reyansh_orbit", "ayaan_chronicle", "krishna_horizon", "ishaan_zenith", "shaurya_quest",
+                "atharv_nexus", "kabir_verse07", "ritvik_drift", "rohan_mumbai", "siddharth_del"
+            ]
+        },
+        cn: {
+            male_first: [
+                "Wei", "Hao", "Yi", "Yu", "Jie", "Bo", "Feng", "Lei", "Yang", "Jian",
+                "Ming", "Jun", "Tao", "Peng", "Xiang", "Chao", "Xuan", "Chen", "Liang", "Zhi",
+                "kai", "Long", "Rui", "Gang", "Bin", "Heng", "Kun", "Sen", "Zhen", "hong"
+            ],
+            female_first: [
+                "Fang", "Na", "Min", "Jing", "Li", "Qiang", "Yan", "Juan", "Xia", "Xiu",
+                "Ling", "Ying", "Hui", "Mei", "Lan", "Qian", "Xin", "Yun", "Ting", "Yue",
+                "Shan", "Dan", "Rong", "Xue", "Lin", "Ping", "Hong", "Shu", "Wen", "Zhen"
+            ],
+            last: [
+                "Wang", "Li", "Zhang", "Liu", "Chen", "Yang", "Huang", "Zhao", "Wu", "Zhou",
+                "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo", "He", "Gao", "Lin", "Luo",
+                "Zheng", "Liang", "Xie", "Song", "Tang", "Xu", "Han", "Feng", "Deng", "Cao"
+            ],
+            username: [
+                "wei_dragon01", "hao_lotus99", "yi_horizon_cn", "yu_bamboo88", "jie_phoenix_x",
+                "bo_shanghai24", "feng_breeze07", "lei_thunder_cn", "yang_zenith", "jian_dynasty",
+                "ming_starlight", "jun_jade_vibe", "tao_harmony", "peng_cloud_9", "chen_orbit_cn"
+            ]
+        }
     };
-    window.accountData = JSON.parse(JSON.stringify(offlineData));
+
+    // ── USED ITEMS TRACKER (ENSURES NO NAME/USERNAME EVER REPEATS) ──
+    const USED_STORAGE_KEY = 'jih4d_used_data_v1';
+    
+    function getUsedSet() {
+        try {
+            const raw = localStorage.getItem(USED_STORAGE_KEY);
+            return raw ? new Set(JSON.parse(raw)) : new Set();
+        } catch (e) {
+            return new Set();
+        }
+    }
+
+    function markItemAsUsed(key) {
+        try {
+            const usedSet = getUsedSet();
+            usedSet.add(key);
+            localStorage.setItem(USED_STORAGE_KEY, JSON.stringify([...usedSet]));
+        } catch (e) {}
+    }
+
+    function initCleanAccountData() {
+        const usedSet = getUsedSet();
+        const cleanData = {};
+
+        for (const country of Object.keys(offlineData)) {
+            cleanData[country] = {};
+            for (const category of Object.keys(offlineData[country])) {
+                cleanData[country][category] = offlineData[country][category].filter(item => {
+                    const val = typeof item === 'object' && item !== null ? item.name : item;
+                    const uniqueKey = `${country}_${category}_${val.toLowerCase()}`;
+                    return !usedSet.has(uniqueKey);
+                });
+            }
+        }
+        return cleanData;
+    }
+
+    window.accountData = initCleanAccountData();
 
     // For Delete All tracking
     window.currentFilteredDocIds = [];
@@ -1190,9 +1359,9 @@
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ oneLine: oneLine })
             });
-            olfStatus('One-line generated + Google Sheets-এ পাঠানো হয়েছে ✓');
+            olfStatus('One-line generated + Google Sheets-এ পাঠানো হয়েছে ✓');
         } catch (err) {
-            olfStatus('Generated, কিন্তু Sheets-এ পাঠাতে সমস্যা হয়েছে।');
+            olfStatus('Generated, কিন্তু Sheets-এ পাঠাতে সমস্যা হয়েছে।');
             console.error(err);
         }
     }
@@ -1303,22 +1472,26 @@
     }
 
     function getUniqueFullName(gender) {
-        let firstList = window.accountData[selCoun][`${gender}_first`];
+        let firstCategory = `${gender}_first`;
+        let firstList = window.accountData[selCoun][firstCategory];
         let lastList = window.accountData[selCoun]["last"];
         
-        let fVal = firstList && firstList.length > 0 
-            ? firstList.splice(Math.floor(Math.random() * firstList.length), 1)[0] 
-            : "DemoName";
-            
-        let lVal = lastList && lastList.length > 0 
-            ? lastList.splice(Math.floor(Math.random() * lastList.length), 1)[0] 
-            : "DemoLast";
+        if (!firstList || firstList.length === 0 || !lastList || lastList.length === 0) {
+            return null; // No more unique names available
+        }
+
+        let fVal = firstList.splice(Math.floor(Math.random() * firstList.length), 1)[0];
+        let lVal = lastList.splice(Math.floor(Math.random() * lastList.length), 1)[0];
 
         let fName = typeof fVal === 'object' && fVal !== null ? fVal.name : fVal;
         let fId = typeof fVal === 'object' && fVal !== null ? fVal.id : null;
 
         let lName = typeof lVal === 'object' && lVal !== null ? lVal.name : lVal;
         let lId = typeof lVal === 'object' && lVal !== null ? lVal.id : null;
+
+        // Permanently mark both as used so they never appear a second time
+        markItemAsUsed(`${selCoun}_${firstCategory}_${fName.toLowerCase()}`);
+        markItemAsUsed(`${selCoun}_last_${lName.toLowerCase()}`);
 
         if (fId && window.firebaseDeleteDoc && window.firebaseDB) {
             window.firebaseDeleteDoc(window.firebaseDoc(window.firebaseDB, "names", fId)).catch(() => {});
@@ -1327,18 +1500,21 @@
             window.firebaseDeleteDoc(window.firebaseDoc(window.firebaseDB, "names", lId)).catch(() => {});
         }
 
-        return { f: fName || "DemoName", l: lName || "DemoLast" };
+        return { f: fName, l: lName };
     }
 
     function getSequentialUsername() {
         let userList = window.accountData[selCoun]["username"];
         if(!userList || userList.length === 0) {
-            return generateRandomString(10);
+            return null;
         }
 
         let userVal = userList.shift();
         let userName = typeof userVal === 'object' && userVal !== null ? userVal.name : userVal;
         let userId = typeof userVal === 'object' && userVal !== null ? userVal.id : null;
+
+        // Permanently mark username as used
+        markItemAsUsed(`${selCoun}_username_${userName.toLowerCase()}`);
 
         if (userId && window.firebaseDeleteDoc && window.firebaseDB) {
             window.firebaseDeleteDoc(window.firebaseDoc(window.firebaseDB, "names", userId)).catch(() => {});
@@ -1347,17 +1523,8 @@
         return userName;
     }
 
-    function generateRandomString(length) {
-        const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'; 
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    }
-
     function generateIdentityData(g) {
-        let { f, l } = getUniqueFullName(g);
+        let nameObj = getUniqueFullName(g);
         
         let firstCount = window.accountData[selCoun][`${g}_first`] ? window.accountData[selCoun][`${g}_first`].length : 0;
         let lastCount = window.accountData[selCoun]["last"] ? window.accountData[selCoun]["last"].length : 0;
@@ -1368,7 +1535,17 @@
                 DB: ${firstCount} First | ${lastCount} Last | ${userCount} Users
             </div><br>
         `;
-        
+
+        if (!nameObj) {
+            document.getElementById('identity-data-box').innerHTML = statsBadgeHTML + `
+                <div style="color: var(--danger); font-size: 12px; font-weight: 600; padding: 12px;">
+                    ⚠️ এই ক্যাটাগরির সব নাম একবার করে ব্যবহার হয়ে গেছে! নতুন নাম আপলোড করুন।
+                </div>
+            `;
+            return;
+        }
+
+        let { f, l } = nameObj;
         let resultTextHTML = statsBadgeHTML;
 
         if (selPlat === 'fb') {
@@ -1381,21 +1558,27 @@
                 </div>
             `;
         } else if (selPlat === 'ig') {
-            let formattedCounter = String(igCounter).padStart(2, '0');
-            let textToCopy = `${f.toLowerCase()}_${l.toLowerCase()}_${formattedCounter}`;
+            let igUser = getSequentialUsername();
+            if (!igUser) {
+                let formattedCounter = String(igCounter).padStart(2, '0');
+                igUser = `${f.toLowerCase()}_${l.toLowerCase()}_${formattedCounter}`;
+                igCounter++; 
+                localStorage.setItem('jih4d_ig_counter', igCounter);
+            }
             let fullName = `${f} ${l}`;
-            
-            igCounter++; 
-            localStorage.setItem('jih4d_ig_counter', igCounter); 
             
             resultTextHTML += `
                 <div class="clickable-data fade-in" style="font-size: 16px; width:100%; text-align:center; margin-bottom:8px;" onclick="copyText('${fullName}', '👤 Name Copied!')">${fullName}</div>
-                <div class="clickable-data fade-in" style="font-size: 15px; width:100%; text-align:center;" onclick="copyText('${textToCopy}', '📸 Username Copied!')">${textToCopy}</div>
+                <div class="clickable-data fade-in" style="font-size: 15px; width:100%; text-align:center;" onclick="copyText('${igUser}', '📸 Username Copied!')">${igUser}</div>
             `;
         } else if (selPlat === 'tt') {
             let fullName = `${f} ${l}`;
             let ttName = getSequentialUsername(); 
             
+            if (!ttName) {
+                ttName = `${f.toLowerCase()}_${l.toLowerCase()}_tt`;
+            }
+
             resultTextHTML += `
                 <div class="clickable-data fade-in" style="font-size: 16px; width:100%; text-align:center; margin-bottom:8px;" onclick="copyText('${fullName}', '👤 Name Copied!')">${fullName}</div>
                 <div class="fade-in" style="font-size:11px; color:var(--text-muted); margin-bottom:4px; font-weight: 500;">Tiktok Username</div>
@@ -1468,9 +1651,21 @@
 
             allDocs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 
+            const usedSet = getUsedSet();
+
             allDocs.forEach((data) => {
                 if(window.accountData[data.country] && window.accountData[data.country][data.category]) {
-                    window.accountData[data.country][data.category].push({ id: data.id, name: data.name });
+                    const uniqueKey = `${data.country}_${data.category}_${(data.name || '').toLowerCase()}`;
+                    if (usedSet.has(uniqueKey)) return; // Skip if already used once
+
+                    const exists = window.accountData[data.country][data.category].some(item => {
+                        const existingName = typeof item === 'object' && item !== null ? item.name : item;
+                        return existingName.toLowerCase() === (data.name || '').toLowerCase();
+                    });
+
+                    if (!exists) {
+                        window.accountData[data.country][data.category].push({ id: data.id, name: data.name });
+                    }
                 }
             });
         } catch (error) {
