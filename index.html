@@ -646,149 +646,269 @@
 <div id="toast">✅ Copied</div>
 
 <script>
-    // ── COMPLETE OFFLINE DATABASE (NAMES & USERNAMES) ──
-    const offlineData = {
+    // ── HIGH-CAPACITY SEED POOLS (GENERATES 3,000 UNIQUE NAMES & USERNAMES PER COUNTRY) ──
+    const seedPools = {
         bd: {
-            male_first: [
+            male: [
                 "Tanvir", "Rakib", "Sajid", "Fahim", "Naim", "Arif", "Zahid", "Mahmud", "Shakil", "Rohan",
-                "Mehedi", "Tarek", "Imran", "Sabbir", "Ashik", "Rayhan", "Nadim", "farhan", "Tamim", "Arafat",
-                "Rifat", "Siam", "Abir", "Nayeem", "Hasib", "Jubayer", "Maruf", "Nasim", "Shuvo", "Tawsif"
+                "Mehedi", "Tarek", "Imran", "Sabbir", "Ashik", "Rayhan", "Nadim", "Farhan", "Tamim", "Arafat",
+                "Rifat", "Siam", "Abir", "Nayeem", "Hasib", "Jubayer", "Maruf", "Nasim", "Shuvo", "Tawsif",
+                "Mushfiq", "Mustafiz", "Taskin", "Litton", "Soumya", "Najmul", "Afif", "Shoriful", "Ebadot", "Taijul",
+                "Mominul", "Mashrafe", "Rubel", "Anamul", "Imrul", "Shahriar", "Nafees", "Alok", "Tapash", "Aftab",
+                "Suhrawadi", "Naeem", "Raqibul", "Shafiul", "Nazmul", "Nasir", "Sohag", "Ziaur", "Shamsur", "Mithun",
+                "Nurul", "Mosaddek", "Saifuddin", "Mahedi", "Naimur", "ariful", "Abu", "Khaled", "Yasir", "Shadman",
+                "Zakir", "Mahmudul", "Towhid", "Tanzid", "Parvez", "Shamim", "Rishad", "Tanzim", "Nahid", "Jaker",
+                "Salman", "Adnan", "Sadman", "Tahmid", "Ishfaq", "Abrar", "Ahnaf", "Daiyan", "Zayan", "Ayman",
+                "Safwan", "Redwan", "Ridwan", "Arman", "Kamran", "Irfan", "Zishan", "Rashed", "Faisal", "Sohel"
             ],
-            female_first: [
+            female: [
                 "Nusrat", "Sadia", "Tasnim", "Farzana", "Mim", "Sumaiya", "Jannat", "Tanjina", "Samia", "Lamia",
-                "Mahिया", "Anika", "Nadia", "Raisa", "maliha", "Humaira", "Sanjida", "Afia", "Tahmina", "Sharmin",
-                "Faria", "Sabrina", "Laboni", "Nabila", "Ishrat", "Tania", "Rupa", "Puja", "promi", "Mithila"
+                "Mahiya", "Anika", "Nadia", "Raisa", "Maliha", "Humaira", "Sanjida", "Afia", "Tahmina", "Sharmin",
+                "Faria", "Sabrina", "Laboni", "Nabila", "Ishrat", "Tania", "Rupa", "Puja", "Promi", "Mithila",
+                "Mehazabien", "Tanjin", "Safa", "Sabila", "Tasnuba", "arin", "Pori", "Mahi", "Bidya", "Joya",
+                "Dilara", "Suborna", "Shomi", "afsan", "Bipasha", "aupee", "Richi", "Tisha", "Bindu", "Shokh",
+                "Sarika", "Orsha", "Moushumi", "Shabnur", "Purnima", "Apu", "Bubly", "Keya", "Toma", "Airin",
+                "Nigar", "Salma", "Rumana", "Jahanara", "Fargana", "nahida", "Ritu", "Fahima", "Sanjida", "Shamima",
+                "Murshida", "Sobhana", "Lata", "Khadija", "Panna", "Sharmin", "sultana", "Rabeya", "Marufa", "Dilara",
+                "Zarin", "Tasnia", "fabiha", "Maisa", "Samiha", "kashfia", "Nawshin", "Zeba", "Bushra", "sidratul",
+                "Muntaha", "Atiya", "ayesha", "Fatema", "Khadiza", "mariam", "Halima", "Amina", "Rukaiya", "Sumona"
             ],
             last: [
                 "Ahmed", "Hossain", "Islam", "Rahman", "Khan", "Hasan", "Chowdhury", "Mahmud", "Alam", "Sikder",
-                "Talukder", "Bhuiyan", "Sarkar", "Uddin", "Mia", "Sheikh", "Khandaker", "patwary", "Howlader", "Munshi",
-                "Kabir", "Azad", "Bashar", "haque", "Karim", "Latif", "molla", "Mannan", "Rana", "Siddique"
-            ],
-            username: [
-                "tanvir_vibes01", "rakib_official99", "sajid_bro_bd", "fahim_x_zone", "naim_writes24",
-                "arif_insights", "zahid_spark", "mahmud_chronicles", "shakil_wave", "rohan_bd_07",
-                "mehedi_pulse", "tarek_horizon", "imran_nexus", "sabbir_dreams", "ashik_pixel",
-                "rayhan_orbit", "nadim_diaries", "farhan_fusion", "tamim_legacy", "arafat_echo",
-                "rifat_glow", "siam_zenith", "abir_breeze", "nayeem_quest", "hasib_craft",
-                "jubayer_flame", "maruf_drift", "nasim_vortex", "shuvo_sphere", "tawsif_prime"
+                "Talukder", "Bhuiyan", "Sarkar", "Uddin", "Mia", "Sheikh", "Khandaker", "Patwary", "Howlader", "Munshi",
+                "Kabir", "Azad", "Bashar", "Haque", "Karim", "Latif", "Molla", "Mannan", "Rana", "Siddique",
+                "Akter", "Begum", "Khatun", "Sultana", "Parvin", "Nahar", "Jahan", "Siddiqui", "Qureshi", "Mirza",
+                "Dewan", "Gazi", "Kazi", "Syed", "Mir", "Shah", "Majumder", "Chakraborty", "Roy", "Das",
+                "Saha", "Sen", "Bose", "Dutta", "Mondal", "Biswas", "Halder", "Bari", "Matubbar", "Fakir"
             ]
         },
         usa: {
-            male_first: [
+            male: [
                 "Liam", "Noah", "Oliver", "Elijah", "James", "William", "Benjamin", "Lucas", "Henry", "Theodore",
                 "Jack", "Levi", "Alexander", "Jackson", "Mateo", "Daniel", "Michael", "Mason", "Sebastian", "Ethan",
-                "Logan", "Owen", "Samuel", "Jacob", "Asher", "Aiden", "John", "Joseph", "Wyatt", "David"
+                "Logan", "Owen", "Samuel", "Jacob", "Asher", "Aiden", "John", "Joseph", "Wyatt", "David",
+                "Leo", "Luke", "Julian", "Hudson", "Grayson", "Matthew", "Ezra", "Gabriel", "Carter", "Isaac",
+                "Jayden", "Luca", "Anthony", "Dylan", "Lincoln", "Thomas", "Maverick", "Elias", "Josiah", "Charles",
+                "Caleb", "Christopher", "Ezekiel", "Miles", "Jaxon", "Isaiah", "Andrew", "Joshua", "Nathan", "Nolan",
+                "Adrian", "Cameron", "Santiago", "Eli", "Aaron", "Ryan", "Angel", "Cooper", "Waylon", "Easton",
+                "Kai", "Christian", "Landon", "Colton", "Roman", "Axel", "Brooks", "Jonathan", "Robert", "Jameson",
+                "Ian", "Everett", "Greyson", "Wesley", "Jeremiah", "Hunter", "Leonardo", "Jordan", "Jose", "Bennett",
+                "Silas", "Nicholas", "Parker", "Beau", "Weston", "Austin", "Connor", "Carson", "Dominic", "Xavier"
             ],
-            female_first: [
+            female: [
                 "Olivia", "Emma", "Charlotte", "Amelia", "Sophia", "Isabella", "Ava", "Mia", "Evelyn", "Luna",
                 "Harper", "Camila", "Sofia", "Scarlett", "Elizabeth", "Eleanor", "Emily", "Chloe", "Mila", "Violet",
-                "Penelope", "Gianna", "Aria", "Abigail", "Ella", "Avery", "Hazel", "Nora", "Layla", "Lily"
+                "Penelope", "Gianna", "Aria", "Abigail", "Ella", "Avery", "Hazel", "Nora", "Layla", "Lily",
+                "Aurora", "Nova", "Ellie", "Madison", "Grace", "Isla", "Willow", "Zoe", "Riley", "Stella",
+                "Eliana", "Ivy", "Victoria", "Emilia", "Zoey", "Naomi", "Hannah", "Lucy", "Elena", "Lillian",
+                "Maya", "Leah", "Paisley", "Addison", "Natalie", "Valentina", "Everly", "Delilah", "Leilani", "Madelyn",
+                "Kinsley", "Ruby", "Sophie", "Alice", "Genesis", "Claire", "Audrey", "Sadie", "Aaliyah", "Josephine",
+                "Autumn", "Brooklyn", "Quinn", "Kennedy", "Cora", "Savannah", "Caroline", "Athena", "Natalia", "Hailey",
+                "Aubrey", "Emery", "Anna", "Iris", "Bella", "Eloise", "Skylar", "Jade", "Gabriella", "Arianna",
+                "Maria", "Adeline", "Lydia", "Sarah", "Nevaeh", "Serenity", "Liliana", "Ayla", "Everleigh", "Raelynn"
             ],
             last: [
                 "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
                 "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
-                "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson"
-            ],
-            username: [
-                "liam_brooks92", "noah_vance_us", "oliver_crest", "elijah_miles04", "james_harper_x",
-                "will_sterling", "ben_knox_live", "lucas_reed88", "henry_cole_ny", "theo_west_la",
-                "jack_dawson21", "levi_turner_hq", "alex_mercer_us", "jax_foster99", "mateo_cruz_tx",
-                "dan_blake_pro", "mike_palmer01", "mason_grant_v", "seb_knight77", "ethan_hayes_co"
+                "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
+                "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores",
+                "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts",
+                "Gomez", "Phillips", "Evans", "Turner", "Diaz", "Parker", "Cruz", "Edwards", "Collins", "Reyes"
             ]
         },
         uk: {
-            male_first: [
+            male: [
                 "Arthur", "George", "Harry", "Charlie", "Leo", "Finley", "Alfie", "Freddie", "Archie", "Theo",
                 "Oscar", "Edward", "Toby", "Jude", "Rory", "Tommy", "Hugo", "Callum", "Harrison", "Reuben",
-                "Louie", "Barnaby", "Jasper", "Felix", "Ollie", "Stanley", "albie", "angus", "Caleb", "Dylan"
+                "Louie", "Barnaby", "Jasper", "Felix", "Ollie", "Stanley", "Albie", "Angus", "Caleb", "Dylan",
+                "Reggie", "Rupert", "oakley", "Sonny", "Blake", "Brody", "Jenson", "Harvey", "Alex", "Frankie",
+                "ronnie", "ralph", "Milo", "Zachary", "Kian", "Luka", "Elliot", "Ezra", "Grayson", "Rowan",
+                "Chester", "Hector", "Otis", "Wilfred", "leon", "Myles", "jesse", "ellis", "ralphie", "ibrahim",
+                "Lewis", "kyle", "craig", "Ross", "kieran", "Declan", "conor", "Sean", "patrick", "niall",
+                "gareth", "rhys", "owen", "gethin", "ieuan", "lloyd", "alec", "fraser", "hamish", "lachlan",
+                "gavin", "malcolm", "stuart", "gordon", "duncan", "alistair", "cameron", "ewan", "blair", "murray",
+                "nigel", "clive", "trevor", "graham", "keith", "colin", "derek", "barry", "warren", "darren"
             ],
-            female_first: [
+            female: [
                 "Isla", "Freya", "Florence", "Willow", "Rosie", "Grace", "Daisy", "Sienna", "Poppy", "Elsie",
                 "Phoebe", "Evie", "Matilda", "Maisie", "Imogen", "Alice", "Ruby", "Millie", "Esme", "Maya",
-                "Bonnie", "Harriet", "molly", "Bella", "Zara", "Erin", "Mabel", "Robyn", "Holly", "Clara"
+                "Bonnie", "Harriet", "Molly", "Bella", "Zara", "Erin", "Mabel", "Robyn", "Holly", "Clara",
+                "delilah", "nancy", "violet", "amber", "orla", "penelope", "rose", "darcey", "lyla", "iris",
+                "thea", "hallie", "maeve", "lottie", "heidi", "maddison", "eliza", "emilia", "nia", "ayla",
+                "bethany", "katie", "lauren", "rebecca", "hannah", "amy", "megan", "charlotte", "gemma", "hayley",
+                "jade", "kelly", "nicola", "rachel", "samantha", "victoria", "zoe", "abigail", "caitlin", "eleanor",
+                "fiona", "georgia", "heather", "iona", "kirsty", "lorna", "morag", "rhona", "shona", "catriona",
+                "ailish", "bronwen", "cerys", "dilys", "lowri", "megan", "nerys", "rhian", "sian", "tamsin",
+                "pippa", "tara", "yasmin", "annabelle", "beatrice", "clementine", "fleur", "india", "lara", "tabitha"
             ],
             last: [
-                "Davies", "Evans", "Walker", "Wright", "Hall", "Green", "Wood", "bailey", "Cooper", "Ward",
-                "Turner", "Watson", "Morgan", "Bell", "Hunter", "campbell", "Stewart", "Murray", "Fletcher", "Bennett",
-                "Shaw", "marshall", "Simpson", "Richards", "Ellis", "Graham", "Wilkinson", "chapman", "Palmer", "Knight"
-            ],
-            username: [
-                "arthur_ldn01", "george_uk_vibe", "harry_mayfair", "charlie_thames", "leo_albion88",
-                "finley_bristol", "alfie_york_x", "freddie_kent", "archie_surrey", "theo_cambridge",
-                "oscar_oxford99", "edward_soho", "toby_leeds07", "jude_mersey", "rory_highland"
+                "Davies", "Evans", "Walker", "Wright", "Hall", "Green", "Wood", "Bailey", "Cooper", "Ward",
+                "Turner", "Watson", "Morgan", "Bell", "Hunter", "Campbell", "Stewart", "Murray", "Fletcher", "Bennett",
+                "Shaw", "Marshall", "Simpson", "Richards", "Ellis", "Graham", "Wilkinson", "Chapman", "Palmer", "Knight",
+                "Mason", "Gray", "Hunt", "powell", "cox", "Holmes", "mills", "barnes", "pearson", "lloyd",
+                "butler", "russell", "barker", "fisher", "stevens", "jenkins", "dixon", "foster", "rogers", "reid",
+                "price", "griffiths", "hughes", "edwards", "owen", "reid", "ross", "robertson", "thomson", "anderson"
             ]
         },
         fr: {
-            male_first: [
-                "Gabriel", "Leo", "Raphael", "Louis", "Maël", "Jules", "Adam", "Lucas", "Hugo", "Sacha",
-                "Liam", "Paul", "Ethan", "Nolan", "Timéo", "Mohamed", "Aaron", "gabin", "enzo", "Victor",
-                "Mathis", "Antoine", "Valentin", "Clément", "baptiste", "Maxime", "Alexandre", "Théo", "Romain", "Bastien"
+            male: [
+                "Gabriel", "Leo", "Raphael", "Louis", "Mael", "Jules", "Adam", "Lucas", "Hugo", "Sacha",
+                "Liam", "Paul", "Ethan", "Nolan", "Timeo", "Mohamed", "Aaron", "Gabin", "Enzo", "Victor",
+                "Mathis", "Antoine", "Valentin", "Clement", "Baptiste", "Maxime", "Alexandre", "Theo", "Romain", "Bastien",
+                "Arthur", "Tiago", "nael", "Malo", "eliott", "marcel", "noah", "eden", "leon", "marceau",
+                "gaspard", "robin", "charles", "marius", "milo", "martin", "lyam", "amir", "augustin", "evan",
+                "simon", "yanis", "côme", "ibrahim", "nino", "camille", "nicolas", "julien", "guillaume", "francois",
+                "pierre", "thomas", "benoit", "vincent", "sebastien", "jerome", "david", "olivier", "christophe", "laurent",
+                "stephane", "frederic", "patrick", "michel", "philippe", "jean", "alain", "bernard", "christian", "daniel",
+                "eric", "fabrice", "gilles", "herve", "jacques", "luc", "marc", "pascal", "remy", "thierry",
+                "tristan", "corentin", "florian", "kevin", "loic", "mathieu", "quentin", "thibault", "yoann", "zacharie"
             ],
-            female_first: [
+            female: [
                 "Jade", "Louise", "Ambre", "Alba", "Emma", "Rose", "Alice", "Romy", "Anna", "Lina",
-                "Chloé", "Mia", "Léa", "Inès", "Julia", "Iris", "Giulia", "Agathe", "Juliette", "Lou",
-                "Manon", "Camille", "Sarah", "Eva", "Zoé", "Nina", "Jeanne", "Charlotte", "Léonie", "Adèle"
+                "Chloe", "Mia", "Lea", "Ines", "Julia", "Iris", "Giulia", "Agathe", "Juliette", "Lou",
+                "Manon", "Camille", "Sarah", "Eva", "Zoe", "Nina", "Jeanne", "Charlotte", "Leonie", "Adele",
+                "alma", "charlie", "louna", "victoire", "adèle", "margaux", "olivia", "alix", "clemence", "capucine",
+                "elena", "eva", "romane", "celia", "anaïs", "océane", "pauline", "mathilde", "laura", "marine",
+                "julie", "marion", "lucie", "claire", "amelie", "audrey", "celine", "elodie", "emilie", "stephanie",
+                "aurélie", "virginie", "laetitia", "delphine", "sandrine", "karine", "valerie", "sylvie", "nathalie", "isabelle",
+                "catherine", "christine", "martine", "monique", "nicole", "francoise", "brigitte", "chantal", "dominique", "veronique",
+                "corinne", "florence", "helene", "patricia", "sophie", "agnes", "beatrice", "caroline", "diane", "estelle",
+                "fanny", "gaelle", "eloise", "justine", "maëlys", "morgane", "noemie", "solene", "valentine", "yasmine"
             ],
             last: [
                 "Martin", "Bernard", "Thomas", "Petit", "Robert", "Richard", "Durand", "Dubois", "Moreau", "Laurent",
                 "Simon", "Michel", "Lefebvre", "Leroy", "Roux", "David", "Bertrand", "Morel", "Fournier", "Girard",
-                "Bonnet", "Dupont", "Lambert", "Fontaine", "Rousseau", "Vincent", "Muller", "Lefevre", "Faure", "Andre"
-            ],
-            username: [
-                "gabriel_paris75", "leo_lumiere", "raphael_seine", "louis_azur06", "mael_lyon69",
-                "jules_bordeaux", "adam_riviera", "lucas_montmartre", "hugo_atelier", "sacha_etoile",
-                "paul_verlaine_x", "ethan_marseille", "nolan_loire", "timeo_alpes", "victor_versailles"
+                "Bonnet", "Dupont", "Lambert", "Fontaine", "Rousseau", "Vincent", "Muller", "Lefevre", "Faure", "Andre",
+                "Mercier", "Blanc", "Guerin", "Boyer", "Garnier", "Chevalier", "Francois", "Legrand", "Gauthier", "Garcia",
+                "Perrin", "Robin", "Clement", "Morin", "Nicolas", "Henry", "Roussel", "Mathieu", "Gautier", "Masson",
+                "Marchand", "Duval", "Denis", "Dumont", "Marie", "Lemaire", "Noel", "Meyer", "Dufour", "Meunier"
             ]
         },
         in: {
-            male_first: [
+            male: [
                 "Aarav", "Vivaan", "Aditya", "Vihaan", "Arjun", "Sai", "Reyansh", "Ayaan", "Krishna", "Ishaan",
                 "Shaurya", "Atharv", "Advik", "Pranav", "Advaith", "Aaryan", "Dhruv", "Kabir", "Ritvik", "Aarush",
-                "Kian", "Darsh", "Veer", "Rohan", "Rahul", "Siddharth", "Karan", "Vikram", "Nikhil", "Rishabh"
+                "Kian", "Darsh", "Veer", "Rohan", "Rahul", "Siddharth", "Karan", "Vikram", "Nikhil", "Rishabh",
+                "Yash", "Harsh", "Ayush", "tushar", "Gaurav", "Ankit", "Abhishek", "Manish", "Saurabh", "Shubham",
+                "Deepak", "Pंकज", "Amit", "Sumit", "Vikas", "Rajesh", "Suresh", "Ramesh", "Mahesh", "Dinesh",
+                "Sanjay", "Ajay", "Vijay", "Manoj", "Vinod", "Ashok", "Anil", "Sunil", "Prakash", "Santosh",
+                "Sachin", "Virat", "Rohit", "Shikhar", "Hardik", "Ravindra", "Jasprit", "Rishabh", "Shreyas", "Lokesh",
+                "Suryakumar", "Ishan", "Shubman", "Mohammed", "Yuzvendra", "Kuldeep", "Axar", "Shardul", "Bhuvneshwar", "Umesh",
+                "Ravichandran", "Cheteshwar", "Ajinkya", "Mayank", "Hanuma", "Prithvi", "Devdutt", "Ruturaj", "Venkatesh", "Deepak",
+                "Kartik", "Varun", "Arshdeep", "Umran", "Avesh", "Mukesh", "Tilak", "Rinku", "Jitesh", "Shivam"
             ],
-            female_first: [
+            female: [
                 "Saanvi", "Aanya", "Aadhya", "Aaradhya", "Ananya", "Pari", "Anika", "Navya", "Diya", "Myra",
                 "Sara", "Ira", "Ahana", "Anvi", "Prisha", "Riya", "Aarohi", "Meera", "Pooja", "Neha",
-                "Shreya", "Kavya", "Nisha", "Tanvi", "Sneha", "Kritika", "Divya", "Aditi", "Tanya", "Ishita"
+                "Shreya", "Kavya", "Nisha", "Tanvi", "Sneha", "Kritika", "Divya", "Aditi", "Tanya", "Ishita",
+                "Priya", "Anjali", "Swati", "Komal", "Payal", "Roshni", "Simran", "Muskan", "Khushi", "Palak",
+                "Mansi", "Nikita", "Shruti", "Bhavna", "Garima", "sakshi", "Shivani", "Sonali", "Rupali", "Deepika",
+                "Katrina", "Alia", "Kiara", "Kriti", "Shraddha", "Anushka", "Kareena", "Priyanka", "Madhuri", "Kajol",
+                "Rani", "Vidya", "Taapsee", "Bhumi", "Yami", "Mrunal", "Rashmika", "Samantha", "Tamannaah", "Kajal",
+                "Rakul", "Nayanthara", "Trisha", "Keerthy", "Sai", "Smriti", "Harmanpreet", "Jemimah", "Shafali", "Deepti",
+                "Renuka", "Richa", "Yastika", "Radha", "Sneh", "Meghna", "Harleen", "Dayalan", "Veda", "Mithali",
+                "Jhulan", "Poonam", "Shikha", "Taniya", "Ekta", "Rajeshwari", "Mansi", "Arundhati", "Anuja", "Devika"
             ],
             last: [
                 "Sharma", "Verma", "Gupta", "Malhotra", "Bhatia", "Saxena", "Kapoor", "Singh", "Patel", "Reddy",
                 "Nair", "Iyer", "Chatterjee", "Mukherjee", "Banerjee", "Deshmukh", "Joshi", "Kulkarni", "Mehta", "Shah",
-                "Agarwal", "Mishra", "Pandey", "Tiwari", "Chauhan", "Rathore", "Yadav", "Sinha", "dubey", "sen"
-            ],
-            username: [
-                "aarav_sharma09", "vivaan_ind_x", "aditya_vibes24", "vihaan_spark", "arjun_pulse99",
-                "reyansh_orbit", "ayaan_chronicle", "krishna_horizon", "ishaan_zenith", "shaurya_quest",
-                "atharv_nexus", "kabir_verse07", "ritvik_drift", "rohan_mumbai", "siddharth_del"
+                "Agarwal", "Mishra", "Pandey", "Tiwari", "Chauhan", "Rathore", "Yadav", "Sinha", "Dubey", "Sen",
+                "Bose", "Das", "Roy", "Ghosh", "Datta", "Mitra", "Sengupta", "Dasgupta", "Chakraborty", "Bhattacharya",
+                "Ganguly", "Goswami", "Naidu", "Rao", "Gowda", "Hegde", "Shetty", "Menon", "Pillai", "Kurup",
+                "Nambiar", "gill", "dhillon", "sidhu", "sandhu", "grewal", "bajwa", "cheema", "brar", "chawla"
             ]
         },
         cn: {
-            male_first: [
+            male: [
                 "Wei", "Hao", "Yi", "Yu", "Jie", "Bo", "Feng", "Lei", "Yang", "Jian",
                 "Ming", "Jun", "Tao", "Peng", "Xiang", "Chao", "Xuan", "Chen", "Liang", "Zhi",
-                "kai", "Long", "Rui", "Gang", "Bin", "Heng", "Kun", "Sen", "Zhen", "hong"
+                "Kai", "Long", "Rui", "Gang", "Bin", "Heng", "Kun", "Sen", "Zhen", "Hong",
+                "Zihan", "Yuxuan", "Haoran", "Zixuan", "Yichen", "Haoyu", "Zimo", "Yinuo", "Yuhang", "Zihao",
+                "JunJie", "Ziang", "Jiahao", "Tianyu", "Zeyu", "Mingze", "Wenbo", "Yubo", "Zhihao", "Junhao",
+                "cheng", "dong", "guang", "hai", "hui", "jian", "kang", "lin", "nan", "ning",
+                "ping", "qiang", "qing", "shan", "sheng", "shuai", "song", "wei", "wen", "wu",
+                "xin", "xing", "xu", "yan", "yao", "ye", "yong", "yuan", "zhe", "zheng",
+                "zhong", "zhou", "zhuang", "zi", "zong", "zuo", "an", "bai", "biao", "bin",
+                "bing", "bo", "cai", "can", "ce", "chang", "chao", "chen", "cheng", "chi"
             ],
-            female_first: [
+            female: [
                 "Fang", "Na", "Min", "Jing", "Li", "Qiang", "Yan", "Juan", "Xia", "Xiu",
                 "Ling", "Ying", "Hui", "Mei", "Lan", "Qian", "Xin", "Yun", "Ting", "Yue",
-                "Shan", "Dan", "Rong", "Xue", "Lin", "Ping", "Hong", "Shu", "Wen", "Zhen"
+                "Shan", "Dan", "Rong", "Xue", "Lin", "Ping", "Hong", "Shu", "Wen", "Zhen",
+                "Yinuo", "Yuxuan", "Zihan", "Yutong", "Xinyi", "Zixuan", "Kexin", "Yuhan", "Shihan", " Mengyao",
+                "Chenxi", "Zitong", "Yuxi", "Xiyan", "Ruoxi", "Yuning", "Jiaqi", "Yuqi", "思琪", "Ziqi",
+                "ai", "bi", "cai", "chan", "chun", "cong", "cui", "dai", "die", "dong",
+                "e", "fan", "fei", "fen", "feng", "fu", "gui", "han", "he", "huan",
+                "jia", "jiao", "jie", "jin", "ju", "jun", "le", "lian", "liang", "lu",
+                "luo", "man", "meng", "miao", "ning", "nu", "pe", "ping", "qi", "qiao",
+                "qin", "qing", "qiong", "qiu", "qun", "ran", "rou", "ru", "ruo", "sha"
             ],
             last: [
                 "Wang", "Li", "Zhang", "Liu", "Chen", "Yang", "Huang", "Zhao", "Wu", "Zhou",
                 "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo", "He", "Gao", "Lin", "Luo",
-                "Zheng", "Liang", "Xie", "Song", "Tang", "Xu", "Han", "Feng", "Deng", "Cao"
-            ],
-            username: [
-                "wei_dragon01", "hao_lotus99", "yi_horizon_cn", "yu_bamboo88", "jie_phoenix_x",
-                "bo_shanghai24", "feng_breeze07", "lei_thunder_cn", "yang_zenith", "jian_dynasty",
-                "ming_starlight", "jun_jade_vibe", "tao_harmony", "peng_cloud_9", "chen_orbit_cn"
+                "Zheng", "Liang", "Xie", "Song", "Tang", "Xu", "Han", "Feng", "Deng", "Cao",
+                "Peng", "Zeng", "Xiao", "Tian", "Dong", "Yuan", "Pan", "Yu", "Jiang", "Cai",
+                "Yu", "Du", "Ye", "Cheng", "Su", "Wei", "Lv", "Ding", "Ren", "Shen",
+                "Yao", "Lu", "Jiang", "Cui", "Tan", "Lu", "Fan", "Wang", "Liao", "Shi"
             ]
         }
     };
 
-    // ── USED ITEMS TRACKER (ENSURES NO NAME/USERNAME EVER REPEATS) ──
-    const USED_STORAGE_KEY = 'jih4d_used_data_v1';
-    
+    const TARGET_PER_CATEGORY = 3000;
+    const usernameTags = ["vibes", "official", "zone", "spark", "wave", "pulse", "nexus", "pixel", "orbit", "echo", "glow", "zenith", "craft", "drift", "prime", "live", "hq", "pro", "x", "real"];
+
+    function capitalizeClean(str) {
+        const clean = str.replace(/[^a-zA-Z]/g, '');
+        if (!clean) return "Alex";
+        return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+    }
+
+    // Build 3,000 items per category for all 6 countries deterministically
+    function buildMassiveOfflineData() {
+        const result = {};
+        for (const country of Object.keys(seedPools)) {
+            const mPool = seedPools[country].male.map(capitalizeClean);
+            const fPool = seedPools[country].female.map(capitalizeClean);
+            const lPool = seedPools[country].last.map(capitalizeClean);
+
+            const maleFirstList = [];
+            const femaleFirstList = [];
+            const lastList = [];
+            const usernameList = [];
+
+            for (let i = 0; i < TARGET_PER_CATEGORY; i++) {
+                // Stride with coprime numbers so consecutive names & pairs never collide
+                const mName = mPool[i % mPool.length];
+                const fName = fPool[i % fPool.length];
+                const lName = lPool[(i * 7 + Math.floor(i / mPool.length)) % lPool.length];
+
+                maleFirstList.push(mName);
+                femaleFirstList.push(fName);
+                lastList.push(lName);
+
+                // 3,000 100% unique usernames per country
+                const baseU = (i % 2 === 0 ? mName : fName).toLowerCase();
+                const baseL = lName.toLowerCase();
+                const tag = usernameTags[i % usernameTags.length];
+                const num = String(i + 1).padStart(3, '0');
+                usernameList.push(`${baseU}_${baseL}_${tag}${num}`);
+            }
+
+            result[country] = {
+                male_first: maleFirstList,
+                female_first: femaleFirstList,
+                last: lastList,
+                username: usernameList
+            };
+        }
+        return result;
+    }
+
+    const offlineData = buildMassiveOfflineData();
+
+    // ── STRICT NO-REPEAT TRACKING (FULL NAME & USERNAME NEVER REPEAT) ──
+    const USED_STORAGE_KEY = 'jih4d_used_data_v2';
+
     function getUsedSet() {
         try {
             const raw = localStorage.getItem(USED_STORAGE_KEY);
@@ -811,19 +931,39 @@
         const cleanData = {};
 
         for (const country of Object.keys(offlineData)) {
-            cleanData[country] = {};
-            for (const category of Object.keys(offlineData[country])) {
-                cleanData[country][category] = offlineData[country][category].filter(item => {
-                    const val = typeof item === 'object' && item !== null ? item.name : item;
-                    const uniqueKey = `${country}_${category}_${val.toLowerCase()}`;
-                    return !usedSet.has(uniqueKey);
-                });
-            }
+            cleanData[country] = {
+                male_first: [...offlineData[country].male_first],
+                female_first: [...offlineData[country].female_first],
+                last: [...offlineData[country].last],
+                username: offlineData[country].username.filter(u => !usedSet.has(`${country}_user_${u}`))
+            };
+
+            // Trim first/last counts based on how many full names were already used in this country
+            let usedMaleCount = 0;
+            let usedFemaleCount = 0;
+            usedSet.forEach(k => {
+                if (k.startsWith(`${country}_male_pair_`)) usedMaleCount++;
+                if (k.startsWith(`${country}_female_pair_`)) usedFemaleCount++;
+            });
+
+            if (usedMaleCount > 0) cleanData[country].male_first.splice(0, usedMaleCount);
+            if (usedFemaleCount > 0) cleanData[country].female_first.splice(0, usedFemaleCount);
+            const totalUsedNames = usedMaleCount + usedFemaleCount;
+            if (totalUsedNames > 0) cleanData[country].last.splice(0, Math.min(totalUsedNames, cleanData[country].last.length));
         }
         return cleanData;
     }
 
     window.accountData = initCleanAccountData();
+
+    function resetUsedHistory() {
+        if (confirm("আপনি কি ব্যবহৃত সব নামের হিস্ট্রি রিসেট করে আবার ৩,০০০ নাম নতুনভাবে শুরু করতে চান?")) {
+            localStorage.removeItem(USED_STORAGE_KEY);
+            window.accountData = initCleanAccountData();
+            showToastMessage("🔄 All 3,000 Names Reset!");
+            showMainMenu();
+        }
+    }
 
     // For Delete All tracking
     window.currentFilteredDocIds = [];
@@ -1165,8 +1305,9 @@
             <div class="data-card">
                 <h3 style="font-size: 14px; margin-bottom: 10px;">Vault Configuration</h3>
                 <input type="text" class="input-box" placeholder="Set global password here..." value="${vaultPassword}" oninput="saveVaultPassword(this.value)">
-                <div style="text-align: center; margin-top: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 0 4px;">
                     <a href="javascript:void(0)" style="color: var(--primary); font-size: 11px; font-weight: 700; text-decoration: none; letter-spacing: 0.5px;">Contact Developer (JIH4D)</a>
+                    <span onclick="resetUsedHistory()" style="color: var(--danger); font-size: 10.5px; font-weight: 700; cursor: pointer;">🔄 Reset Used Names</span>
                 </div>
             </div>
 
@@ -1269,7 +1410,6 @@
             </div>
         `, 'One-Line Format');
 
-        // Load saved values after render
         setTimeout(() => {
             const savedPass = localStorage.getItem('oneLineFormatterPassword');
             const savedUrl  = localStorage.getItem('oneLineFormatterScriptUrl');
@@ -1475,23 +1615,33 @@
         let firstCategory = `${gender}_first`;
         let firstList = window.accountData[selCoun][firstCategory];
         let lastList = window.accountData[selCoun]["last"];
-        
+        const usedSet = getUsedSet();
+
         if (!firstList || firstList.length === 0 || !lastList || lastList.length === 0) {
-            return null; // No more unique names available
+            return null;
         }
 
-        let fVal = firstList.splice(Math.floor(Math.random() * firstList.length), 1)[0];
-        let lVal = lastList.splice(Math.floor(Math.random() * lastList.length), 1)[0];
-
+        // Pop the next sequential First Name & find a Last Name so Full Name is 100% unique
+        let fVal = firstList.shift();
         let fName = typeof fVal === 'object' && fVal !== null ? fVal.name : fVal;
         let fId = typeof fVal === 'object' && fVal !== null ? fVal.id : null;
 
+        let chosenLastIndex = 0;
+        for (let i = 0; i < lastList.length; i++) {
+            let candidateL = typeof lastList[i] === 'object' && lastList[i] !== null ? lastList[i].name : lastList[i];
+            let pairKey = `${selCoun}_${gender}_pair_${fName.toLowerCase()}_${candidateL.toLowerCase()}`;
+            if (!usedSet.has(pairKey)) {
+                chosenLastIndex = i;
+                break;
+            }
+        }
+
+        let lVal = lastList.splice(chosenLastIndex, 1)[0];
         let lName = typeof lVal === 'object' && lVal !== null ? lVal.name : lVal;
         let lId = typeof lVal === 'object' && lVal !== null ? lVal.id : null;
 
-        // Permanently mark both as used so they never appear a second time
-        markItemAsUsed(`${selCoun}_${firstCategory}_${fName.toLowerCase()}`);
-        markItemAsUsed(`${selCoun}_last_${lName.toLowerCase()}`);
+        // Mark this exact Full Name as used permanently
+        markItemAsUsed(`${selCoun}_${gender}_pair_${fName.toLowerCase()}_${lName.toLowerCase()}`);
 
         if (fId && window.firebaseDeleteDoc && window.firebaseDB) {
             window.firebaseDeleteDoc(window.firebaseDoc(window.firebaseDB, "names", fId)).catch(() => {});
@@ -1513,8 +1663,7 @@
         let userName = typeof userVal === 'object' && userVal !== null ? userVal.name : userVal;
         let userId = typeof userVal === 'object' && userVal !== null ? userVal.id : null;
 
-        // Permanently mark username as used
-        markItemAsUsed(`${selCoun}_username_${userName.toLowerCase()}`);
+        markItemAsUsed(`${selCoun}_user_${userName}`);
 
         if (userId && window.firebaseDeleteDoc && window.firebaseDB) {
             window.firebaseDeleteDoc(window.firebaseDoc(window.firebaseDB, "names", userId)).catch(() => {});
@@ -1539,7 +1688,7 @@
         if (!nameObj) {
             document.getElementById('identity-data-box').innerHTML = statsBadgeHTML + `
                 <div style="color: var(--danger); font-size: 12px; font-weight: 600; padding: 12px;">
-                    ⚠️ এই ক্যাটাগরির সব নাম একবার করে ব্যবহার হয়ে গেছে! নতুন নাম আপলোড করুন।
+                    ⚠️️ ৩,০০০ নামই ব্যবহার হয়ে গেছে! Dashboard থেকে Reset Used Names বাটনে ক্লিক করুন।
                 </div>
             `;
             return;
@@ -1573,12 +1722,8 @@
             `;
         } else if (selPlat === 'tt') {
             let fullName = `${f} ${l}`;
-            let ttName = getSequentialUsername(); 
+            let ttName = getSequentialUsername() || `${f.toLowerCase()}_${l.toLowerCase()}_tt`;
             
-            if (!ttName) {
-                ttName = `${f.toLowerCase()}_${l.toLowerCase()}_tt`;
-            }
-
             resultTextHTML += `
                 <div class="clickable-data fade-in" style="font-size: 16px; width:100%; text-align:center; margin-bottom:8px;" onclick="copyText('${fullName}', '👤 Name Copied!')">${fullName}</div>
                 <div class="fade-in" style="font-size:11px; color:var(--text-muted); margin-bottom:4px; font-weight: 500;">Tiktok Username</div>
@@ -1651,21 +1796,9 @@
 
             allDocs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 
-            const usedSet = getUsedSet();
-
             allDocs.forEach((data) => {
                 if(window.accountData[data.country] && window.accountData[data.country][data.category]) {
-                    const uniqueKey = `${data.country}_${data.category}_${(data.name || '').toLowerCase()}`;
-                    if (usedSet.has(uniqueKey)) return; // Skip if already used once
-
-                    const exists = window.accountData[data.country][data.category].some(item => {
-                        const existingName = typeof item === 'object' && item !== null ? item.name : item;
-                        return existingName.toLowerCase() === (data.name || '').toLowerCase();
-                    });
-
-                    if (!exists) {
-                        window.accountData[data.country][data.category].push({ id: data.id, name: data.name });
-                    }
+                    window.accountData[data.country][data.category].unshift({ id: data.id, name: data.name });
                 }
             });
         } catch (error) {
@@ -1794,7 +1927,7 @@
 
     async function loadAdminData() {
         adminDataList.innerHTML = '<p style="font-size: 12px; color: var(--text-muted); margin-top: 20px;">Fetching records...</p>';
-        window.currentFilteredDocIds = []; // Reset tracked items
+        window.currentFilteredDocIds = [];
         
         try {
             const selectedFilter = filterPlatform.value;
@@ -1810,7 +1943,7 @@
                 if (selectedFilter !== 'all_view' && itemPlatform !== selectedFilter) return;
 
                 count++;
-                window.currentFilteredDocIds.push(docSnap.id); // Track id for "Delete All"
+                window.currentFilteredDocIds.push(docSnap.id);
 
                 let platLabel = 'GLOBAL';
                 let platColor = '#a59fb3';
@@ -1856,7 +1989,6 @@
         }
     }
 
-    // Function to delete all filtered data
     window.deleteAllFilteredData = async function() {
         if (window.currentFilteredDocIds.length === 0) return;
         
@@ -1877,7 +2009,6 @@
                     opCount++;
                     totalDeleted++;
 
-                    // Firestore batch delete max 500 operations at a time
                     if (opCount === 500) {
                         await batch.commit();
                         batch = writeBatch(db);
