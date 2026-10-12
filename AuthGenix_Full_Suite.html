@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthGenix // Premium Tool Engine</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.2.2/otpauth.umd.min.js"></script>
+    <style>
+        /* ── THEMES ── */
+        :root, .theme-light {
+            --bg-base: linear-gradient(150deg, #fdf4ff 0%, #ede9fe 40%, #e0f2fe 100%);
+            --card-bg: rgba(255,255,255,0.88);
+            --card-border: rgba(139,92,246,0.18);
+            --text-main: #1e1b4b;
+            --text-muted: #6b7280;
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --primary-soft: rgba(139,92,246,0.13);
+            --input-bg: rgba(255,255,255,0.95);
+            --shadow: 0 20px 60px -15px rgba(139,92,246,0.2);
+            --danger: #f43f5e;
+            --success: #10b981;
+            --admin-bg: rgba(30,27,75,0.95);
+            --admin-border: rgba(167,139,250,0.35);
+            --admin-primary: #a78bfa;
+            --admin-text: #ede9fe;
+            --admin-input: rgba(30,27,75,0.9);
+        }
+
+        .theme-ocean {
+            --bg-base: radial-gradient(ellipse at 20% 50%, #0c4a6e 0%, #020617 45%, #0f172a 100%);
+            --card-bg: rgba(15,23,42,0.8);
+            --card-border: rgba(45,212,191,0.2);
+            --text-main: #f0fdfa;
+            --text-muted: #5eead4;
+            --primary: #2dd4bf;
+            --primary-hover: #14b8a6;
+            --primary-soft: rgba(45,212,191,0.14);
+            --input-bg: rgba(2,6,23,0.75);
+            --shadow: 0 25px 60px -10px rgba(0,0,0,0.65);
+            --admin-bg: rgba(2,6,23,0.96);
+            --admin-border: rgba(45,212,191,0.3);
+            --admin-primary: #2dd4bf;
+            --admin-text: #ccfbf1;
+            --admin-input: rgba(2,6,23,0.9);
+        }
+
+        .theme-cyber {
+            --bg-base: radial-gradient(ellipse at 80% 20%, #3b0764 0%, #0c0a09 40%, #1c1917 100%);
+            --card-bg: rgba(28,25,23,0.82);
+            --card-border: rgba(250,204,21,0.2);
+            --text-main: #fefce8;
+            --text-muted: #fde047;
+            --primary: #facc15;
+            --primary-hover: #eab308;
+            --primary-soft: rgba(250,204,21,0.14);
+            --input-bg: rgba(12,10,9,0.8);
+            --shadow: 0 25px 60px -10px rgba(0,0,0,0.7);
+            --admin-bg: rgba(12,10,9,0.97);
+            --admin-border: rgba(250,204,21,0.3);
+            --admin-primary: #facc15;
+            --admin-text: #fef9c3;
+            --admin-input: rgba(12,10,9,0.92);
+        }
+
+        .theme-ios {
+            --bg-base: linear-gradient(180deg, #000 0%, #111 50%, #1a1a1c 100%);
+            --card-bg: rgba(22,22,24,0.9);
+            --card-border: rgba(255,255,255,0.08);
+            --text-main: #f5f5f7;
+            --text-muted: rgba(235,235,245,0.5);
+            --primary: #30d158;
+            --primary-hover: #28c84c;
+            --primary-soft: rgba(48,209,88,0.15);
+            --input-bg: rgba(44,44,46,0.8);
+            --shadow: 0 20px 50px rgba(0,0,0,0.8);
+            --admin-bg: rgba(22,22,24,0.98);
+            --admin-border: rgba(48,209,88,0.3);
+            --admin-primary: #30d158;
+            --admin-text: #f5f5f7;
+            --admin-input: rgba(0,0,0,0.6);
+        }
+
+        /* ── RESET ── */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg-base);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            transition: background 0.5s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── PRELOADER ── */
+        #preloader {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--bg-base);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 0.5s, visibility 0.5s;
+            backdrop-filter: blur(16px);
+        }
+        .loader-ring {
+            width: 70px; height: 70px; position: relative;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .loader-ring::after {
+            content: ""; position: absolute; inset: 0;
+            border: 2.5px solid transparent;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.85s linear infinite;
+        }
+        .loader-logo {
+            width: 26px; height: 26px;
+            stroke: var(--primary); stroke-width: 2.5;
+            fill: none; stroke-linecap: round; stroke-linejoin: round;
+            animation: pulse 1.6s ease-in-out infinite alternate;
+        }
+        .loader-text {
+            margin-top: 18px; font-size: 11px; font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase;
+            color: var(--text-main); opacity: 0.6;
+            animation: blink 1.4s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse {
+            from { filter: drop-shadow(0 0 3px var(--primary)); transform: scale(0.9); }
+            to   { filter: drop-shadow(0 0 14px var(--primary)); transform: scale(1.12); }
+        }
+        @keyframes blink { 0%,100%{opacity:.3} 50%{opacity:.85} }
+
+        /* ── SHELL ── */
+        .app-wrapper, .admin-wrapper {
+            width: 100%; display: flex;
+            justify-content: center; align-items: center;
+            padding: 12px;
+        }
+        .app-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(24px) saturate(1.5);
+            -webkit-backdrop-filter: blur(24px) saturate(1.5);
+            border: 1.5px solid var(--card-border);
+            width: 100%; max-width: 400px;
+            min-height: 540px; max-height: 96vh;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            display: flex; flex-direction: column;
+            overflow: hidden; position: relative;
+            transition: all 0.35s ease;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            padding: 16px 18px 4px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo-container { display: flex; align-items: center; gap: 9px; }
+        .logo-icon {
+            width: 22px; height: 22px;
+            stroke: var(--primary); stroke-width: 2.5;
+            fill: none; stroke-linecap: round; stroke-linejoin: round;
+            filter: drop-shadow(0 0 6px var(--primary));
+        }
+        .header h2 {
+            font-size: 15.5px; font-weight: 700;
+            letter-spacing: -0.3px; color: var(--text-main);
+        }
+        .header-icons { display: flex; gap: 6px; }
+        .theme-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--input-bg);
+            border: 1.5px solid var(--card-border);
+            cursor: pointer; color: var(--text-main);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 14px;
+            transition: all 0.25s ease;
+        }
+        .theme-btn:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            transform: scale(1.1) rotate(12deg);
+        }
+
+        /* ── CONTENT ── */
+        .content {
+            padding: 10px 16px 16px;
+            flex-grow: 1; overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .content::-webkit-scrollbar { display: none; }
+
+        h3 {
+            font-size: 13px; font-weight: 650;
+            margin-bottom: 4px; color: var(--text-main);
+        }
+        p.desc {
+            font-size: 11.5px; color: var(--text-muted);
+            margin-bottom: 13px; line-height: 1.5; opacity: 0.85;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
+
+        /* ── BUTTONS ── */
+        .btn {
+            background: var(--input-bg);
+            color: var(--text-main);
+            border: 1.5px solid var(--card-border);
+            padding: 12.5px 10px;
+            border-radius: 50px;
+            font-size: 12px; font-weight: 600;
+            cursor: pointer; width: 100%;
+            transition: all 0.25s ease;
+            letter-spacing: -0.1px;
+        }
+        .btn:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px -4px color-mix(in srgb, var(--primary) 30%, transparent);
+        }
+        .btn:active { transform: scale(0.96); }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #0a0a0a !important;
+            border: none; font-weight: 700;
+            box-shadow: 0 6px 20px -4px color-mix(in srgb, var(--primary) 50%, transparent);
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px -4px color-mix(in srgb, var(--primary) 55%, transparent);
+        }
+
+        /* ── INPUTS ── */
+        .input-group { margin-bottom: 10px; }
+        .input-box {
+            width: 100%;
+            padding: 12.5px 14px;
+            border: 1.5px solid var(--card-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            border-radius: 14px;
+            font-size: 12.5px;
+            outline: none;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+        .input-box:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+        .input-box::placeholder { color: var(--text-muted); opacity: 0.6; }
+        textarea.input-box { min-height: 85px; resize: vertical; line-height: 1.45; }
+
+        /* ── SWITCH ── */
+        .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; inset: 0;
+            background: rgba(128,128,128,0.2);
+            border: 1px solid var(--card-border);
+            border-radius: 20px; transition: .3s;
+        }
+        .slider:before {
+            position: absolute; content: "";
+            height: 14px; width: 14px; left: 2px; bottom: 2px;
+            background: var(--text-main);
+            border-radius: 50%; transition: .3s;
+        }
+        input:checked + .slider { background: var(--primary); border-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(18px); background: #fff; }
+
+        /* ── CARDS ── */
+        .data-card {
+            background: var(--input-bg);
+            border: 1.5px solid var(--card-border);
+            padding: 14px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            transition: border-color 0.25s;
+        }
+        .data-card:hover { border-color: color-mix(in srgb, var(--primary) 40%, var(--card-border)); }
+
+        .clickable-data {
+            color: var(--primary); font-weight: 600;
+            cursor: pointer; padding: 10px 12px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            display: inline-block; margin: 2px;
+            font-size: 12.5px;
+        }
+        .clickable-data:hover {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            transform: scale(1.03);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+            margin: 14px 0;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center; padding: 12px;
+            font-size: 10px; color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+            letter-spacing: 0.5px;
+        }
+        .footer div:hover { color: var(--primary); cursor: pointer; }
+
+        /* ── TOAST ── */
+        #toast {
+            visibility: hidden; min-width: 160px;
+            background: var(--text-main); color: var(--card-bg);
+            text-align: center; border-radius: 50px;
+            padding: 11px 20px; position: fixed; z-index: 100;
+            bottom: 28px; left: 50%;
+            transform: translate(-50%, 24px);
+            font-size: 12px; font-weight: 600;
+            opacity: 0;
+            transition: 0.35s cubic-bezier(0.34, 1.5, 0.64, 1);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        }
+        #toast.show {
+            visibility: visible; opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── ADMIN ── */
+        .admin-container {
+            background: var(--admin-bg);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1.5px solid var(--admin-border);
+            padding: 32px 24px; border-radius: 24px;
+            width: 100%; max-width: 420px; text-align: center;
+            box-shadow: 0 24px 56px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .admin-container h2 {
+            margin-bottom: 20px; color: var(--admin-primary);
+            font-weight: 700; font-size: 17px;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            text-shadow: 0 0 20px color-mix(in srgb, var(--admin-primary) 40%, transparent);
+        }
+        .admin-select {
+            width: 100%; padding: 12px 14px; margin-bottom: 9px;
+            background: var(--admin-input);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            color: var(--admin-text); border-radius: 12px;
+            font-size: 12px; outline: none; appearance: none;
+            transition: all 0.25s;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a78bfa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 12px center; background-size: 9px;
+        }
+        .admin-select:focus {
+            border-color: var(--admin-primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--admin-primary) 18%, transparent);
+        }
+        .admin-select option { background: #1e1b4b; color: #fff; }
+
+        .admin-btn {
+            width: 100%; padding: 13px;
+            background: var(--admin-primary); color: #0a0a0a;
+            border: none; font-weight: 700; font-size: 12.5px;
+            border-radius: 50px; cursor: pointer;
+            margin-bottom: 8px; transition: all 0.25s;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--admin-primary) 30%, transparent);
+        }
+        .admin-btn:hover {
+            filter: brightness(1.12); transform: translateY(-2px);
+            box-shadow: 0 8px 24px color-mix(in srgb, var(--admin-primary) 40%, transparent);
+        }
+        .admin-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .admin-btn-danger {
+            background: transparent; color: var(--danger);
+            border: 1.5px solid rgba(244,63,94,0.35);
+            box-shadow: none; margin-top: 8px;
+        }
+        .admin-btn-danger:hover {
+            background: var(--danger); color: #fff;
+            box-shadow: 0 4px 16px rgba(244,63,94,0.35);
+        }
+
+        .admin-form-panel {
+            background: rgba(0,0,0,0.25);
+            padding: 16px; border-radius: 14px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .admin-divider-text {
+            text-align: center; margin: 12px 0;
+            font-size: 10px; color: var(--admin-primary);
+            font-weight: 700; letter-spacing: 1.5px;
+            display: flex; align-items: center;
+        }
+        .admin-divider-text::before, .admin-divider-text::after {
+            content: ''; flex: 1;
+            border-bottom: 1px dashed color-mix(in srgb, var(--admin-primary) 30%, transparent);
+            margin: 0 10px;
+        }
+        .upload-zone {
+            background: rgba(0,0,0,0.2);
+            border: 1.5px dashed color-mix(in srgb, var(--admin-primary) 30%, transparent);
+            padding: 12px; border-radius: 12px; margin-bottom: 10px;
+            transition: all 0.25s;
+        }
+        .upload-zone:hover {
+            background: color-mix(in srgb, var(--admin-primary) 8%, transparent);
+            border-color: var(--admin-primary);
+        }
+        input[type=file] { width: 100%; color: var(--text-muted); font-size: 11px; cursor: pointer; }
+        input[type=file]::file-selector-button {
+            background: color-mix(in srgb, var(--admin-primary) 12%, transparent);
+            color: var(--admin-primary);
+            border: 1.5px solid var(--admin-primary);
+            padding: 6px 12px; border-radius: 50px;
+            font-weight: 600; cursor: pointer; margin-right: 10px;
+            font-size: 10.5px; transition: all 0.25s;
+        }
+        input[type=file]::file-selector-button:hover {
+            background: var(--admin-primary); color: #0a0a0a;
+        }
+
+        .admin-list-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+        }
+        .admin-stat-badge {
+            background: color-mix(in srgb, var(--admin-primary) 12%, transparent);
+            border: 1px solid color-mix(in srgb, var(--admin-primary) 25%, transparent);
+            padding: 5px 10px; border-radius: 50px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .admin-stat-label {
+            font-size: 9px; color: var(--admin-text);
+            text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
+        }
+        .admin-stat-value {
+            background: var(--admin-primary); color: #0a0a0a;
+            padding: 1px 7px; border-radius: 50px;
+            font-size: 10px; font-weight: 800;
+        }
+        .admin-delete-all-btn {
+            background: transparent; color: var(--danger);
+            border: 1.5px solid rgba(244,63,94,0.3);
+            padding: 5px 10px; border-radius: 50px;
+            cursor: pointer; font-size: 10px; font-weight: 700;
+            transition: all 0.25s; display: flex; align-items: center; gap: 4px;
+        }
+        .admin-delete-all-btn:hover {
+            background: var(--danger); color: #fff;
+        }
+        #adminDataList {
+            max-height: 260px; overflow-y: auto;
+            margin-bottom: 14px; padding-right: 4px;
+        }
+        #adminDataList::-webkit-scrollbar { width: 3px; }
+        #adminDataList::-webkit-scrollbar-thumb {
+            background: color-mix(in srgb, var(--admin-primary) 40%, transparent);
+            border-radius: 4px;
+        }
+        .admin-data-card {
+            background: rgba(0,0,0,0.3);
+            padding: 11px 12px; margin-top: 7px;
+            border-radius: 12px; text-align: left;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.2s;
+        }
+        .admin-data-card:hover {
+            border-color: color-mix(in srgb, var(--admin-primary) 35%, transparent);
+            transform: translateX(3px);
+        }
+        .admin-data-info { display: flex; flex-direction: column; gap: 2px; }
+        .admin-data-name {
+            color: var(--admin-primary); font-weight: 600; font-size: 12.5px;
+        }
+        .admin-data-meta {
+            font-size: 9px; color: var(--text-muted);
+            display: flex; align-items: center; gap: 4px;
+        }
+        .admin-delete-btn {
+            background: transparent; color: var(--danger);
+            border: 1px solid rgba(244,63,94,0.25);
+            padding: 4px 9px; border-radius: 50px;
+            cursor: pointer; font-size: 9.5px; font-weight: 600;
+            transition: 0.2s;
+        }
+        .admin-delete-btn:hover { background: var(--danger); color: #fff; }
+
+        .close-admin {
+            position: absolute; top: 12px; right: 14px;
+            font-size: 10px; font-weight: 700; color: var(--danger);
+            cursor: pointer;
+            border: 1.5px solid rgba(244,63,94,0.3);
+            padding: 4px 9px; border-radius: 50px;
+            transition: 0.25s; background: transparent;
+        }
+        .close-admin:hover { background: var(--danger); color: #fff; }
+
+        .hidden { display: none !important; }
+
+        #olfOutput {
+            background: var(--card-bg) !important;
+            border-radius: 12px !important;
+            border: 1.5px solid var(--card-border) !important;
+        }
+    
+
+        /* ── PRO DATA STUDIO UI THEME (visual-only overrides) ── */
+        :root { color-scheme: dark; }
+        body.theme-ocean, body.theme-cyber, body.theme-ios {
+            --bg-base: #090b14;
+            --card-bg: #12172a;
+            --card-border: #262d49;
+            --text-main: #f1f4ff;
+            --text-muted: #9aa5c4;
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --primary-soft: #251b48;
+            --input-bg: #0b1020;
+            --shadow: 0 20px 55px #0005;
+            --danger: #fb7185;
+            --success: #34d399;
+            --admin-bg: #0d1020;
+            --admin-border: #262d49;
+            --admin-primary: #a78bfa;
+            --admin-text: #f1f4ff;
+            --admin-input: #0b1020;
+        }
+        body.theme-light {
+            --bg-base: #f3f6fc;
+            --card-bg: #ffffff;
+            --card-border: #e0e7f3;
+            --text-main: #17213a;
+            --text-muted: #68748d;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-soft: #eef2ff;
+            --input-bg: #ffffff;
+            --shadow: 0 20px 55px #1e3a8a12;
+            --danger: #be123c;
+            --success: #047857;
+            --admin-bg: #ffffff;
+            --admin-border: #e0e7f3;
+            --admin-primary: #4f46e5;
+            --admin-text: #17213a;
+            --admin-input: #f7f9ff;
+        }
+        html, body { min-height: 100%; }
+        body {
+            display: block;
+            min-height: 100vh;
+            background: var(--bg-base);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+            transition: background .2s ease, color .2s ease;
+        }
+        .app-wrapper {
+            width: 100%; min-height: 100vh; padding: 16px;
+            display: flex; align-items: stretch; justify-content: center;
+        }
+        .app-container {
+            width: 100%; max-width: 1480px; min-height: calc(100vh - 32px);
+            max-height: none; border-radius: 18px; overflow: hidden;
+            background: var(--bg-base); border: 1px solid var(--card-border);
+            box-shadow: var(--shadow); backdrop-filter: none; -webkit-backdrop-filter: none;
+        }
+        .header {
+            min-height: 76px; padding: 16px 24px; gap: 16px;
+            border-bottom: 1px solid var(--card-border);
+            background: var(--card-bg);
+        }
+        .logo-container { gap: 12px; }
+        .logo-icon { width: 30px; height: 30px; filter: none; }
+        .header h2 { font-size: 17px; font-weight: 800; letter-spacing: -.35px; }
+        .header-icons { gap: 8px; }
+        .theme-btn {
+            width: auto; min-width: 40px; height: 40px; padding: 0 12px;
+            border-radius: 11px; background: var(--card-bg); border: 1px solid var(--card-border);
+        }
+        .content {
+            padding: clamp(18px, 3vw, 34px); overflow: visible;
+            max-height: none; scrollbar-width: thin;
+        }
+        .data-card {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            padding: 20px; border-radius: 16px; margin-bottom: 16px;
+            box-shadow: 0 8px 24px #0000000a;
+        }
+        .data-card:hover { border-color: color-mix(in srgb, var(--primary) 40%, var(--card-border)); }
+        .btn, .btn-primary, .admin-btn, .admin-delete-all-btn {
+            border-radius: 10px; min-height: 40px; font-weight: 700;
+        }
+        .btn-primary { color: #fff !important; background: linear-gradient(120deg, var(--primary), #3b82f6); }
+        .input-box, .admin-select {
+            border-radius: 10px; border: 1px solid var(--card-border);
+            background: var(--input-bg); color: var(--text-main);
+        }
+        .footer { background: var(--card-bg); border-top: 1px solid var(--card-border); padding: 14px; }
+        .admin-wrapper { min-height: 100vh; align-items: flex-start; padding: 24px 16px; }
+        .admin-container {
+            max-width: 760px; border-radius: 18px; padding: 26px;
+            background: var(--admin-bg); border: 1px solid var(--admin-border);
+            box-shadow: var(--shadow); backdrop-filter: none; -webkit-backdrop-filter: none;
+            text-align: left;
+        }
+        .admin-container h2 { letter-spacing: -.3px; text-transform: none; text-shadow: none; }
+        .admin-form-panel, .admin-list-header { border-radius: 12px; }
+        #adminDataList { max-height: 48vh; overflow: auto; }
+        #toast { background: var(--primary); color: #fff; border-radius: 10px; box-shadow: var(--shadow); }
+        @media (max-width: 700px) {
+            .app-wrapper { padding: 0; }
+            .app-container { min-height: 100vh; border-radius: 0; }
+            .header { min-height: 66px; padding: 12px 14px; }
+            .header h2 { font-size: 15px; }
+            .content { padding: 16px 12px 24px; }
+            .data-card { padding: 15px; }
+            .admin-container { padding: 20px 14px; }
+        }
+
+</style>
+</head>
+<body class="theme-ocean">
+
+<div id="preloader">
+    <div class="loader-ring">
+        <svg class="loader-logo" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+    </div>
+    <div class="loader-text">AuthGenix</div>
+</div>
+
+<div class="app-wrapper" id="mainAppWrapper">
+    <div class="app-container">
+        <div class="header">
+            <div class="logo-container">
+                <svg class="logo-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                <h2 id="page-title"></h2>
+            </div>
+            <div class="header-icons">
+                <button class="theme-btn" onclick="showMainMenu()" title="Home">🏠</button>
+                <button class="theme-btn" onclick="cycleTheme()" id="themeIcon" title="Change Theme">🌊</button>
+            </div>
+        </div>
+        
+        <div class="content fade-in" id="app-content"></div>
+
+        <div class="footer">
+            <div onclick="openAdminPanel()" style="font-weight: 600; margin-bottom: 4px; letter-spacing: 0.5px; cursor: pointer; display: inline-block;">
+                AuthGenix // Secure Hub
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-wrapper hidden" id="adminAppWrapper">
+    <div class="admin-container">
+        
+        <div class="close-admin" onclick="closeAdminPanel()">Close [X]</div>
+
+        <div id="loginSection">
+            <h2 style="margin-top: 16px;">🔒 Admin Access</h2>
+            <input type="email" id="emailInput" class="input-box" placeholder="Administrator Email">
+            <input type="password" id="passwordInput" class="input-box" placeholder="Secure Password">
+            <button id="loginBtn" class="admin-btn">Authenticate</button>
+            <p id="errorMsg" style="color: var(--danger); font-size: 12px; font-weight: 500;"></p>
+        </div>
+
+        <div id="dashboardSection" class="hidden">
+            <h2 style="margin-top: 10px;">⚙️ Data Control Hub</h2>
+            
+            <div class="admin-form-panel">
+                <select id="platformSelect" class="admin-select" style="border-color: rgba(100, 255, 218, 0.4);">
+                    <option value="all">🌐 All Platforms (Global)</option>
+                    <option value="fb">📘 Facebook Only</option>
+                    <option value="ig">📸 Instagram Only</option>
+                    <option value="tt">🎵 TikTok Only</option>
+                </select>
+
+                <div style="display: flex; gap: 10px;">
+                    <select id="countrySelect" class="admin-select">
+                        <option value="bd">🇧🇩 BGD</option>
+                        <option value="usa">🇺🇸 USA</option>
+                        <option value="uk">🇬🇧 UK</option>
+                        <option value="fr">🇫🇷 FRA</option>
+                        <option value="in">🇮🇳 IND</option>
+                        <option value="cn">🇨🇳 CHN</option>
+                    </select>
+                    
+                    <select id="categorySelect" class="admin-select">
+                        <option value="male_full">👨 Male</option>
+                        <option value="female_full">👩 Female</option>
+                        <option value="username">@ User</option>
+                    </select>
+                </div>
+                
+                <div class="admin-divider-text">UPLOAD DATABASE</div>
+
+                <div class="upload-zone">
+                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">
+                        📁 Select a .txt file (One name/username per line)
+                    </div>
+                    <input type="file" id="fileInput" accept=".txt">
+                </div>
+
+                <button id="addDataBtn" class="admin-btn" style="margin-top: 5px;">Upload Data</button>
+            </div>
+
+            <div class="admin-list-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="admin-stat-badge">
+                        <span class="admin-stat-label">Total</span>
+                        <span class="admin-stat-value" id="recordCountText">0</span>
+                    </div>
+                    <button id="deleteAllBtn" class="admin-delete-all-btn hidden" onclick="deleteAllFilteredData()">🗑️ Delete All</button>
+                </div>
+                
+                <select id="filterPlatform" class="admin-select" style="width: auto; padding: 6px 10px; margin-bottom: 0; font-size: 11px;">
+                    <option value="all_view">View All</option>
+                    <option value="all">Global</option>
+                    <option value="fb">Facebook</option>
+                    <option value="ig">Instagram</option>
+                    <option value="tt">TikTok</option>
+                </select>
+            </div>
+            
+            <div id="adminDataList">
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 22px;">Connecting to secure server...</p>
+            </div>
+
+            <button id="logoutBtn" class="admin-btn admin-btn-danger">Secure Logout</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast">✅ Copied</div>
+
+<script>
+    // ── HIGH-CAPACITY SEED POOLS (GENERATES 3,000 UNIQUE NAMES & USERNAMES PER COUNTRY) ──
+    const seedPools = {
+        bd: {
+            male: [
+                "Tanvir", "Rakib", "Sajid", "Fahim", "Naim", "Arif", "Zahid", "Mahmud", "Shakil", "Rohan",
+                "Mehedi", "Tarek", "Imran", "Sabbir", "Ashik", "Rayhan", "Nadim", "Farhan", "Tamim", "Arafat",
+                "Rifat", "Siam", "Abir", "Nayeem", "Hasib", "Jubayer", "Maruf", "Nasim", "Shuvo", "Tawsif",
+                "Mushfiq", "Mustafiz", "Taskin", "Litton", "Soumya", "Najmul", "Afif", "Shoriful", "Ebadot", "Taijul",
+                "Mominul", "Mashrafe", "Rubel", "Anamul", "Imrul", "Shahriar", "Nafees", "Alok", "Tapash", "Aftab",
+                "Suhrawadi", "Naeem", "Raqibul", "Shafiul", "Nazmul", "Nasir", "Sohag", "Ziaur", "Shamsur", "Mithun",
+                "Nurul", "Mosaddek", "Saifuddin", "Mahedi", "Naimur", "ariful", "Abu", "Khaled", "Yasir", "Shadman",
+                "Zakir", "Mahmudul", "Towhid", "Tanzid", "Parvez", "Shamim", "Rishad", "Tanzim", "Nahid", "Jaker",
+                "Salman", "Adnan", "Sadman", "Tahmid", "Ishfaq", "Abrar", "Ahnaf", "Daiyan", "Zayan", "Ayman",
+                "Safwan", "Redwan", "Ridwan", "Arman", "Kamran", "Irfan", "Zishan", "Rashed", "Faisal", "Sohel"
+            ],
+            female: [
+                "Nusrat", "Sadia", "Tasnim", "Farzana", "Mim", "Sumaiya", "Jannat", "Tanjina", "Samia", "Lamia",
+                "Mahiya", "Anika", "Nadia", "Raisa", "Maliha", "Humaira", "Sanjida", "Afia", "Tahmina", "Sharmin",
+                "Faria", "Sabrina", "Laboni", "Nabila", "Ishrat", "Tania", "Rupa", "Puja", "Promi", "Mithila",
+                "Mehazabien", "Tanjin", "Safa", "Sabila", "Tasnuba", "arin", "Pori", "Mahi", "Bidya", "Joya",
+                "Dilara", "Suborna", "Shomi", "afsan", "Bipasha", "aupee", "Richi", "Tisha", "Bindu", "Shokh",
+                "Sarika", "Orsha", "Moushumi", "Shabnur", "Purnima", "Apu", "Bubly", "Keya", "Toma", "Airin",
+                "Nigar", "Salma", "Rumana", "Jahanara", "Fargana", "nahida", "Ritu", "Fahima", "Sanjida", "Shamima",
+                "Murshida", "Sobhana", "Lata", "Khadija", "Panna", "Sharmin", "sultana", "Rabeya", "Marufa", "Dilara",
+                "Zarin", "Tasnia", "fabiha", "Maisa", "Samiha", "kashfia", "Nawshin", "Zeba", "Bushra", "sidratul",
+                "Muntaha", "Atiya", "ayesha", "Fatema", "Khadiza", "mariam", "Halima", "Amina", "Rukaiya", "Sumona"
+            ],
+            last: [
+                "Ahmed", "Hossain", "Islam", "Rahman", "Khan", "Hasan", "Chowdhury", "Mahmud", "Alam", "Sikder",
+                "Talukder", "Bhuiyan", "Sarkar", "Uddin", "Mia", "Sheikh", "Khandaker", "Patwary", "Howlader", "Munshi",
+                "Kabir", "Azad", "Bashar", "Haque", "Karim", "Latif", "Molla", "Mannan", "Rana", "Siddique",
+                "Akter", "Begum", "Khatun", "Sultana", "Parvin", "Nahar", "Jahan", "Siddiqui", "Qureshi", "Mirza",
+                "Dewan", "Gazi", "Kazi", "Syed", "Mir", "Shah", "Majumder", "Chakraborty", "Roy", "Das",
+                "Saha", "Sen", "Bose", "Dutta", "Mondal", "Biswas", "Halder", "Bari", "Matubbar", "Fakir"
+            ]
+        },
+        usa: {
+            male: [
+                "Liam", "Noah", "Oliver", "Elijah", "James", "William", "Benjamin", "Lucas", "Henry", "Theodore",
+                "Jack", "Levi", "Alexander", "Jackson", "Mateo", "Daniel", "Michael", "Mason", "Sebastian", "Ethan",
+                "Logan", "Owen", "Samuel", "Jacob", "Asher", "Aiden", "John", "Joseph", "Wyatt", "David",
+                "Leo", "Luke", "Julian", "Hudson", "Grayson", "Matthew", "Ezra", "Gabriel", "Carter", "Isaac",
+                "Jayden", "Luca", "Anthony", "Dylan", "Lincoln", "Thomas", "Maverick", "Elias", "Josiah", "Charles",
+                "Caleb", "Christopher", "Ezekiel", "Miles", "Jaxon", "Isaiah", "Andrew", "Joshua", "Nathan", "Nolan",
+                "Adrian", "Cameron", "Santiago", "Eli", "Aaron", "Ryan", "Angel", "Cooper", "Waylon", "Easton",
+                "Kai", "Christian", "Landon", "Colton", "Roman", "Axel", "Brooks", "Jonathan", "Robert", "Jameson",
+                "Ian", "Everett", "Greyson", "Wesley", "Jeremiah", "Hunter", "Leonardo", "Jordan", "Jose", "Bennett",
+                "Silas", "Nicholas", "Parker", "Beau", "Weston", "Austin", "Connor", "Carson", "Dominic", "Xavier"
+            ],
+            female: [
+                "Olivia", "Emma", "Charlotte", "Amelia", "Sophia", "Isabella", "Ava", "Mia", "Evelyn", "Luna",
+                "Harper", "Camila", "Sofia", "Scarlett", "Elizabeth", "Eleanor", "Emily", "Chloe", "Mila", "Violet",
+                "Penelope", "Gianna", "Aria", "Abigail", "Ella", "Avery", "Hazel", "Nora", "Layla", "Lily",
+                "Aurora", "Nova", "Ellie", "Madison", "Grace", "Isla", "Willow", "Zoe", "Riley", "Stella",
+                "Eliana", "Ivy", "Victoria", "Emilia", "Zoey", "Naomi", "Hannah", "Lucy", "Elena", "Lillian",
+                "Maya", "Leah", "Paisley", "Addison", "Natalie", "Valentina", "Everly", "Delilah", "Leilani", "Madelyn",
+                "Kinsley", "Ruby", "Sophie", "Alice", "Genesis", "Claire", "Audrey", "Sadie", "Aaliyah", "Josephine",
+                "Autumn", "Brooklyn", "Quinn", "Kennedy", "Cora", "Savannah", "Caroline", "Athena", "Natalia", "Hailey",
+                "Aubrey", "Emery", "Anna", "Iris", "Bella", "Eloise", "Skylar", "Jade", "Gabriella", "Arianna",
+                "Maria", "Adeline", "Lydia", "Sarah", "Nevaeh", "Serenity", "Liliana", "Ayla", "Everleigh", "Raelynn"
+            ],
+            last: [
+                "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
+                "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
+                "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
+                "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores",
+                "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts",
+                "Gomez", "Phillips", "Evans", "Turner", "Diaz", "Parker", "Cruz", "Edwards", "Collins", "Reyes"
+            ]
+        },
+        uk: {
+            male: [
+                "Arthur", "George", "Harry", "Charlie", "Leo", "Finley", "Alfie", "Freddie", "Archie", "Theo",
+                "Oscar", "Edward", "Toby", "Jude", "Rory", "Tommy", "Hugo", "Callum", "Harrison", "Reuben",
+                "Louie", "Barnaby", "Jasper", "Felix", "Ollie", "Stanley", "Albie", "Angus", "Caleb", "Dylan",
+                "Reggie", "Rupert", "oakley", "Sonny", "Blake", "Brody", "Jenson", "Harvey", "Alex", "Frankie",
+                "ronnie", "ralph", "Milo", "Zachary", "Kian", "Luka", "Elliot", "Ezra", "Grayson", "Rowan",
+                "Chester", "Hector", "Otis", "Wilfred", "leon", "Myles", "jesse", "ellis", "ralphie", "ibrahim",
+                "Lewis", "kyle", "craig", "Ross", "kieran", "Declan", "conor", "Sean", "patrick", "niall",
+                "gareth", "rhys", "owen", "gethin", "ieuan", "lloyd", "alec", "fraser", "hamish", "lachlan",
+                "gavin", "malcolm", "stuart", "gordon", "duncan", "alistair", "cameron", "ewan", "blair", "murray",
+                "nigel", "clive", "trevor", "graham", "keith", "colin", "derek", "barry", "warren", "darren"
+            ],
+            female: [
+                "Isla", "Freya", "Florence", "Willow", "Rosie", "Grace", "Daisy", "Sienna", "Poppy", "Elsie",
+                "Phoebe", "Evie", "Matilda", "Maisie", "Imogen", "Alice", "Ruby", "Millie", "Esme", "Maya",
+                "Bonnie", "Harriet", "Molly", "Bella", "Zara", "Erin", "Mabel", "Robyn", "Holly", "Clara",
+                "delilah", "nancy", "violet", "amber", "orla", "penelope", "rose", "darcey", "lyla", "iris",
+                "thea", "hallie", "maeve", "lottie", "heidi", "maddison", "eliza", "emilia", "nia", "ayla",
+                "bethany", "katie", "lauren", "rebecca", "hannah", "amy", "megan", "charlotte", "gemma", "hayley",
+                "jade", "kelly", "nicola", "rachel", "samantha", "victoria", "zoe", "abigail", "caitlin", "eleanor",
+                "fiona", "georgia", "heather", "iona", "kirsty", "lorna", "morag", "rhona", "shona", "catriona",
+                "ailish", "bronwen", "cerys", "dilys", "lowri", "megan", "nerys", "rhian", "sian", "tamsin",
+                "pippa", "tara", "yasmin", "annabelle", "beatrice", "clementine", "fleur", "india", "lara", "tabitha"
+            ],
+            last: [
+                "Davies", "Evans", "Walker", "Wright", "Hall", "Green", "Wood", "Bailey", "Cooper", "Ward",
+                "Turner", "Watson", "Morgan", "Bell", "Hunter", "Campbell", "Stewart", "Murray", "Fletcher", "Bennett",
+                "Shaw", "Marshall", "Simpson", "Richards", "Ellis", "Graham", "Wilkinson", "Chapman", "Palmer", "Knight",
+                "Mason", "Gray", "Hunt", "powell", "cox", "Holmes", "mills", "barnes", "pearson", "lloyd",
+                "butler", "russell", "barker", "fisher", "stevens", "jenkins", "dixon", "foster", "rogers", "reid",
+                "price", "griffiths", "hughes", "edwards", "owen", "reid", "ross", "robertson", "thomson", "anderson"
+            ]
+        },
+        fr: {
+            male: [
+                "Gabriel", "Leo", "Raphael", "Louis", "Mael", "Jules", "Adam", "Lucas", "Hugo", "Sacha",
+                "Liam", "Paul", "Ethan", "Nolan", "Timeo", "Mohamed", "Aaron", "Gabin", "Enzo", "Victor",
+                "Mathis", "Antoine", "Valentin", "Clement", "Baptiste", "Maxime", "Alexandre", "Theo", "Romain", "Bastien",
+                "Arthur", "Tiago", "nael", "Malo", "eliott", "marcel", "noah", "eden", "leon", "marceau",
+                "gaspard", "robin", "charles", "marius", "milo", "martin", "lyam", "amir", "augustin", "evan",
+                "simon", "yanis", "côme", "ibrahim", "nino", "camille", "nicolas", "julien", "guillaume", "francois",
+                "pierre", "thomas", "benoit", "vincent", "sebastien", "jerome", "david", "olivier", "christophe", "laurent",
+                "stephane", "frederic", "patrick", "michel", "philippe", "jean", "alain", "bernard", "christian", "daniel",
+                "eric", "fabrice", "gilles", "herve", "jacques", "luc", "marc", "pascal", "remy", "thierry",
+                "tristan", "corentin", "florian", "kevin", "loic", "mathieu", "quentin", "thibault", "yoann", "zacharie"
+            ],
+            female: [
+                "Jade", "Louise", "Ambre", "Alba", "Emma", "Rose", "Alice", "Romy", "Anna", "Lina",
+                "Chloe", "Mia", "Lea", "Ines", "Julia", "Iris", "Giulia", "Agathe", "Juliette", "Lou",
+                "Manon", "Camille", "Sarah", "Eva", "Zoe", "Nina", "Jeanne", "Charlotte", "Leonie", "Adele",
+                "alma", "charlie", "louna", "victoire", "adèle", "margaux", "olivia", "alix", "clemence", "capucine",
+                "elena", "eva", "romane", "celia", "anaïs", "océane", "pauline", "mathilde", "laura", "marine",
+                "julie", "marion", "lucie", "claire", "amelie", "audrey", "celine", "elodie", "emilie", "stephanie",
+                "aurélie", "virginie", "laetitia", "delphine", "sandrine", "karine", "valerie", "sylvie", "nathalie", "isabelle",
+                "catherine", "christine", "martine", "monique", "nicole", "francoise", "brigitte", "chantal", "dominique", "veronique",
+                "corinne", "florence", "helene", "patricia", "sophie", "agnes", "beatrice", "caroline", "diane", "estelle",
+                "fanny", "gaelle", "eloise", "justine", "maëlys", "morgane", "noemie", "solene", "valentine", "yasmine"
+            ],
+            last: [
+                "Martin", "Bernard", "Thomas", "Petit", "Robert", "Richard", "Durand", "Dubois", "Moreau", "Laurent",
+                "Simon", "Michel", "Lefebvre", "Leroy", "Roux", "David", "Bertrand", "Morel", "Fournier", "Girard",
+                "Bonnet", "Dupont", "Lambert", "Fontaine", "Rousseau", "Vincent", "Muller", "Lefevre", "Faure", "Andre",
+                "Mercier", "Blanc", "Guerin", "Boyer", "Garnier", "Chevalier", "Francois", "Legrand", "Gauthier", "Garcia",
+                "Perrin", "Robin", "Clement", "Morin", "Nicolas", "Henry", "Roussel", "Mathieu", "Gautier", "Masson",
+                "Marchand", "Duval", "Denis", "Dumont", "Marie", "Lemaire", "Noel", "Meyer", "Dufour", "Meunier"
+            ]
+        },
+        in: {
+            male: [
+                "Aarav", "Vivaan", "Aditya", "Vihaan", "Arjun", "Sai", "Reyansh", "Ayaan", "Krishna", "Ishaan",
+                "Shaurya", "Atharv", "Advik", "Pranav", "Advaith", "Aaryan", "Dhruv", "Kabir", "Ritvik", "Aarush",
+                "Kian", "Darsh", "Veer", "Rohan", "Rahul", "Siddharth", "Karan", "Vikram", "Nikhil", "Rishabh",
+                "Yash", "Harsh", "Ayush", "tushar", "Gaurav", "Ankit", "Abhishek", "Manish", "Saurabh", "Shubham",
+                "Deepak", "Pंकज", "Amit", "Sumit", "Vikas", "Rajesh", "Suresh", "Ramesh", "Mahesh", "Dinesh",
+                "Sanjay", "Ajay", "Vijay", "Manoj", "Vinod", "Ashok", "Anil", "Sunil", "Prakash", "Santosh",
+                "Sachin", "Virat", "Rohit", "Shikhar", "Hardik", "Ravindra", "Jasprit", "Rishabh", "Shreyas", "Lokesh",
+                "Suryakumar", "Ishan", "Shubman", "Mohammed", "Yuzvendra", "Kuldeep", "Axar", "Shardul", "Bhuvneshwar", "Umesh",
+                "Ravichandran", "Cheteshwar", "Ajinkya", "Mayank", "Hanuma", "Prithvi", "Devdutt", "Ruturaj", "Venkatesh", "Deepak",
+                "Kartik", "Varun", "Arshdeep", "Umran", "Avesh", "Mukesh", "Tilak", "Rinku", "Jitesh", "Shivam"
+            ],
+            female: [
+                "Saanvi", "Aanya", "Aadhya", "Aaradhya", "Ananya", "Pari", "Anika", "Navya", "Diya", "Myra",
+                "Sara", "Ira", "Ahana", "Anvi", "Prisha", "Riya", "Aarohi", "Meera", "Pooja", "Neha",
+                "Shreya", "Kavya", "Nisha", "Tanvi", "Sneha", "Kritika", "Divya", "Aditi", "Tanya", "Ishita",
+                "Priya", "Anjali", "Swati", "Komal", "Payal", "Roshni", "Simran", "Muskan", "Khushi", "Palak",
+                "Mansi", "Nikita", "Shruti", "Bhavna", "Garima", "sakshi", "Shivani", "Sonali", "Rupali", "Deepika",
+                "Katrina", "Alia", "Kiara", "Kriti", "Shraddha", "Anushka", "Kareena", "Priyanka", "Madhuri", "Kajol",
+                "Rani", "Vidya", "Taapsee", "Bhumi", "Yami", "Mrunal", "Rashmika", "Samantha", "Tamannaah", "Kajal",
+                "Rakul", "Nayanthara", "Trisha", "Keerthy", "Sai", "Smriti", "Harmanpreet", "Jemimah", "Shafali", "Deepti",
+                "Renuka", "Richa", "Yastika", "Radha", "Sneh", "Meghna", "Harleen", "Dayalan", "Veda", "Mithali",
+                "Jhulan", "Poonam", "Shikha", "Taniya", "Ekta", "Rajeshwari", "Mansi", "Arundhati", "Anuja", "Devika"
+            ],
+            last: [
+                "Sharma", "Verma", "Gupta", "Malhotra", "Bhatia", "Saxena", "Kapoor", "Singh", "Patel", "Reddy",
+                "Nair", "Iyer", "Chatterjee", "Mukherjee", "Banerjee", "Deshmukh", "Joshi", "Kulkarni", "Mehta", "Shah",
+                "Agarwal", "Mishra", "Pandey", "Tiwari", "Chauhan", "Rathore", "Yadav", "Sinha", "Dubey", "Sen",
+                "Bose", "Das", "Roy", "Ghosh", "Datta", "Mitra", "Sengupta", "Dasgupta", "Chakraborty", "Bhattacharya",
+                "Ganguly", "Goswami", "Naidu", "Rao", "Gowda", "Hegde", "Shetty", "Menon", "Pillai", "Kurup",
+                "Nambiar", "gill", "dhillon", "sidhu", "sandhu", "grewal", "bajwa", "cheema", "brar", "chawla"
+            ]
+        },
+        cn: {
+            male: [
+                "Wei", "Hao", "Yi", "Yu", "Jie", "Bo", "Feng", "Lei", "Yang", "Jian",
+                "Ming", "Jun", "Tao", "Peng", "Xiang", "Chao", "Xuan", "Chen", "Liang", "Zhi",
+                "Kai", "Long", "Rui", "Gang", "Bin", "Heng", "Kun", "Sen", "Zhen", "Hong",
+                "Zihan", "Yuxuan", "Haoran", "Zixuan", "Yichen", "Haoyu", "Zimo", "Yinuo", "Yuhang", "Zihao",
+                "JunJie", "Ziang", "Jiahao", "Tianyu", "Zeyu", "Mingze", "Wenbo", "Yubo", "Zhihao", "Junhao",
+                "cheng", "dong", "guang", "hai", "hui", "jian", "kang", "lin", "nan", "ning",
+                "ping", "qiang", "qing", "shan", "sheng", "shuai", "song", "wei", "wen", "wu",
+                "xin", "xing", "xu", "yan", "yao", "ye", "yong", "yuan", "zhe", "zheng",
+                "zhong", "zhou", "zhuang", "zi", "zong", "zuo", "an", "bai", "biao", "bin",
+                "bing", "bo", "cai", "can", "ce", "chang", "chao", "chen", "cheng", "chi"
+            ],
+            female: [
+                "Fang", "Na", "Min", "Jing", "Li", "Qiang", "Yan", "Juan", "Xia", "Xiu",
+                "Ling", "Ying", "Hui", "Mei", "Lan", "Qian", "Xin", "Yun", "Ting", "Yue",
+                "Shan", "Dan", "Rong", "Xue", "Lin", "Ping", "Hong", "Shu", "Wen", "Zhen",
+                "Yinuo", "Yuxuan", "Zihan", "Yutong", "Xinyi", "Zixuan", "Kexin", "Yuhan", "Shihan", " Mengyao",
+                "Chenxi", "Zitong", "Yuxi", "Xiyan", "Ruoxi", "Yuning", "Jiaqi", "Yuqi", "思琪", "Ziqi",
+                "ai", "bi", "cai", "chan", "chun", "cong", "cui", "dai", "die", "dong",
+                "e", "fan", "fei", "fen", "feng", "fu", "gui", "han", "he", "huan",
+                "jia", "jiao", "jie", "jin", "ju", "jun", "le", "lian", "liang", "lu",
+                "luo", "man", "meng", "miao", "ning", "nu", "pe", "ping", "qi", "qiao",
+                "qin", "qing", "qiong", "qiu", "qun", "ran", "rou", "ru", "ruo", "sha"
+            ],
+            last: [
+                "Wang", "Li", "Zhang", "Liu", "Chen", "Yang", "Huang", "Zhao", "Wu", "Zhou",
+                "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo", "He", "Gao", "Lin", "Luo",
+                "Zheng", "Liang", "Xie", "Song", "Tang", "Xu", "Han", "Feng", "Deng", "Cao",
+                "Peng", "Zeng", "Xiao", "Tian", "Dong", "Yuan", "Pan", "Yu", "Jiang", "Cai",
+                "Yu", "Du", "Ye", "Cheng", "Su", "Wei", "Lv", "Ding", "Ren", "Shen",
+                "Yao", "Lu", "Jiang", "Cui", "Tan", "Lu", "Fan", "Wang", "Liao", "Shi"
+            ]
+        }
+    };
+
+    const TARGET_PER_CATEGORY = 3000;
+    const usernameTags = ["vibes", "official", "zone", "spark", "wave", "pulse", "nexus", "pixel", "orbit", "echo", "glow", "zenith", "craft", "drift", "prime", "live", "hq", "pro", "x", "real"];
+
+    function capitalizeClean(str) {
+        const clean = str.replace(/[^a-zA-Z]/g, '');
+        if (!clean) return "Alex";
+        return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+    }
+
+    // Build 3,000 items per category for all 6 countries deterministically
+    function buildMassiveOfflineData() {
+        const result = {};
+        for (const country of Object.keys(seedPools)) {
+            const mPool = seedPools[country].male.map(capitalizeClean);
+            const fPool = seedPools[country].female.map(capitalizeClean);
+            const lPool = seedPools[country].last.map(capitalizeClean);
+
+            const maleFirstList = [];
+            const femaleFirstList = [];
+            const lastList = [];
+            const usernameList = [];
+
+            for (let i = 0; i < TARGET_PER_CATEGORY; i++) {
+                // Stride with coprime numbers so consecutive names & pairs never collide
+                const mName = mPool[i % mPool.length];
+                const fName = fPool[i % fPool.length];
+                const lName = lPool[(i * 7 + Math.floor(i / mPool.length)) % lPool.length];
+
+                maleFirstList.push(mName);
+                femaleFirstList.push(fName);
+                lastList.push(lName);
+
+                // 3,000 100% unique usernames per country
+                const baseU = (i % 2 === 0 ? mName : fName).toLowerCase();
+                const baseL = lName.toLowerCase();
+                const tag = usernameTags[i % usernameTags.length];
+                const num = String(i + 1).padStart(3, '0');
+                usernameList.push(`${baseU}_${baseL}_${tag}${num}`);
+            }
+
+            result[country] = {
+                male_first: maleFirstList,
+                female_first: femaleFirstList,
+                last: lastList,
+                username: usernameList
+            };
+        }
+        return result;
+    }
+
+    const offlineData = buildMassiveOfflineData();
+
+    // ── STRICT NO-REPEAT TRACKING (FULL NAME & USERNAME NEVER REPEAT) ──
+    const USED_STORAGE_KEY = 'jih4d_used_data_v2';
+
+    function getUsedSet() {
+        try {
+            const raw = localStorage.getItem(USED_STORAGE_KEY);
+            return raw ? new Set(JSON.parse(raw)) : new Set();
+        } catch (e) {
+            return new Set();
+        }
+    }
+
+    function markItemAsUsed(key) {
+        try {
+            const usedSet = getUsedSet();
+            usedSet.add(key);
+            localStorage.setItem(USED_STORAGE_KEY, JSON.stringify([...usedSet]));
+        } catch (e) {}
+    }
+
+    function initCleanAccountData() {
+        const usedSet = getUsedSet();
+        const cleanData = {};
+
+        for (const country of Object.keys(offlineData)) {
+            cleanData[country] = {
+                male_first: [...offlineData[country].male_first],
+                female_first: [...offlineData[country].female_first],
+                last: [...offlineData[country].last],
+                username: offlineData[country].username.filter(u => !usedSet.has(`${country}_user_${u}`))
+            };
+
+            // Trim first/last counts based on how many full names were already used in this country
+            let usedMaleCount = 0;
+            let usedFemaleCount = 0;
+            usedSet.forEach(k => {
+                if (k.startsWith(`${country}_male_pair_`)) usedMaleCount++;
+                if (k.startsWith(`${country}_female_pair_`)) usedFemaleCount++;
+            });
+
+            if (usedMaleCount > 0) cleanData[country].male_first.splice(0, usedMaleCount);
+            if (usedFemaleCount > 0) cleanData[country].female_first.splice(0, usedFemaleCount);
+            const totalUsedNames = usedMaleCount + usedFemaleCount;
+            if (totalUsedNames > 0) cleanData[country].last.splice(0, Math.min(totalUsedNames, cleanData[country].last.length));
+        }
+        return cleanData;
+    }
+
+    window.accountData = initCleanAccountData();
+
+    function resetUsedHistory() {
+        if (confirm("আপনি কি ব্যবহৃত সব নামের হিস্ট্রি রিসেট করে আবার ৩,০০০ নাম নতুনভাবে শুরু করতে চান?")) {
+            localStorage.removeItem(USED_STORAGE_KEY);
+            window.accountData = initCleanAccountData();
+            showToastMessage("🔄 All 3,000 Names Reset!");
+            showMainMenu();
+        }
+    }
+
+    // For Delete All tracking
+    window.currentFilteredDocIds = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const preloader = document.getElementById('preloader');
+            if(preloader) {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                setTimeout(() => { preloader.style.display = 'none'; }, 500);
+            }
+        }, 800); 
+    });
+
+    function openAdminPanel() {
+        document.getElementById('mainAppWrapper').classList.add('hidden');
+        document.getElementById('adminAppWrapper').classList.remove('hidden');
+    }
+    
+    function closeAdminPanel() {
+        document.getElementById('adminAppWrapper').classList.add('hidden');
+        document.getElementById('mainAppWrapper').classList.remove('hidden');
+    }
+
+    const themeSequence = ['theme-ocean', 'theme-light'];
+    const themeData = {
+        'theme-light': { emoji: '☀️', name: 'Light Theme' },
+        'theme-ocean': { emoji: '🌊', name: 'Ocean Aqua' },
+        'theme-cyber': { emoji: '🚀', name: 'Cyber Neon' },
+        'theme-ios': { emoji: '🍏', name: 'iOS Dark' }
+    };
+
+    let currentTheme = localStorage.getItem('jih4d_theme') || 'theme-ocean';
+    if (!themeSequence.includes(currentTheme)) {
+        currentTheme = 'theme-ocean';
+    }
+    
+    document.body.className = currentTheme;
+    updateThemeIcon(currentTheme);
+
+    function cycleTheme() {
+        let currentIndex = themeSequence.indexOf(currentTheme);
+        let nextIndex = (currentIndex + 1) % themeSequence.length;
+        let newTheme = themeSequence[nextIndex];
+        
+        document.body.className = newTheme;
+        localStorage.setItem('jih4d_theme', newTheme);
+        currentTheme = newTheme;
+        
+        updateThemeIcon(newTheme);
+        showToastMessage(themeData[newTheme].emoji + " " + themeData[newTheme].name + " Applied!");
+    }
+
+    function updateThemeIcon(themeName) {
+        let themeIcon = document.getElementById('themeIcon');
+        if(themeIcon) {
+            themeIcon.innerText = themeData[themeName].emoji;
+        }
+    }
+
+    let autoPasteEnabled = false;
+    let vaultPassword = localStorage.getItem('jih4d_vault_pass') || '';
+    let igCounter = parseInt(localStorage.getItem('jih4d_ig_counter')) || 1;
+    let customCounter = parseInt(localStorage.getItem('jih4d_custom_counter')) || 1;
+
+    function saveVaultPassword(val) {
+        vaultPassword = val;
+        localStorage.setItem('jih4d_vault_pass', val);
+    }
+
+    function copyText(text, message) {
+        if(text) {
+            navigator.clipboard.writeText(text).then(() => showToastMessage(message || "✅ Copied!"));
+        } else {
+            showToastMessage(message);
+        }
+    }
+
+    function showToastMessage(message) {
+        let toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.className = "show";
+        setTimeout(() => { 
+            toast.className = toast.className.replace("show", ""); 
+        }, 2000);
+    }
+
+    function toggle2FAMode(checked, manualId, autoId, resultId) {
+        autoPasteEnabled = checked; 
+        document.getElementById(manualId).style.display = checked ? 'none' : 'block';
+        document.getElementById(autoId).style.display = checked ? 'block' : 'none';
+        document.getElementById(resultId).innerHTML = ''; 
+        let inp = document.getElementById(manualId).querySelector('input');
+        if(inp) inp.value = '';
+    }
+
+    function toggleOTPMode(checked, manualId, autoId, resultId) {
+        autoPasteEnabled = checked;
+        document.getElementById(manualId).style.display = checked ? 'none' : 'block';
+        document.getElementById(autoId).style.display = checked ? 'block' : 'none';
+        document.getElementById(resultId).innerHTML = ''; 
+        let inp = document.getElementById(manualId).querySelector('input');
+        if(inp) inp.value = '';
+    }
+
+    function manualProcessOTP(inputId, targetId) {
+        let text = document.getElementById(inputId).value;
+        executeOTPCore(text, targetId, false);
+    }
+
+    function autoPasteProcessOTP(targetId) {
+        navigator.clipboard.readText().then(text => {
+            executeOTPCore(text, targetId, true);
+        }).catch(() => {
+            document.getElementById(targetId).innerHTML = `<div style="color:var(--danger); font-size:11px; text-align:center; padding:8px; border:1px solid var(--danger); border-radius:6px; margin-top:8px;">⚠️ Browser permission denied</div>`;
+        });
+    }
+
+    function executeOTPCore(text, targetId, isAuto) {
+        const resultDiv = document.getElementById(targetId);
+        if (!text.trim()) { resultDiv.innerHTML = ``; return; }
+
+        let match = text.match(/\b\d{3}[\s-]?\d{3,5}\b|\b\d{5,8}\b/);
+        
+        if (match) {
+            let code = match[0].replace(/[\s-]/g, ''); 
+            let pastedTextHTML = isAuto ? `<div style="font-size: 9px; color: var(--text-muted); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">SMS: ${text}</div>` : '';
+
+            resultDiv.innerHTML = `
+                <div class="clickable-data fade-in" style="width: 100%; text-align: center; border-color: var(--primary); padding: 12px; margin-top: 8px; margin-bottom: 0;" onclick="copyText('${code}', '💬 Code Copied: ${code}')">
+                    ${pastedTextHTML}
+                    <div style="font-size: 20px; font-weight: 700; color: var(--primary); letter-spacing: 3px;">${code}</div>
+                </div>
+            `;
+            if(isAuto) { copyText(code, `💬 Auto Copied: ${code}`); }
+        } else {
+            let displaySecret = text.length > 25 ? text.substring(0, 25) + '...' : text;
+            resultDiv.innerHTML = `
+                <div style="color:var(--danger); font-size:10px; text-align:center; margin-top:8px; padding: 8px; border: 1px dashed var(--danger); border-radius: 8px; background: rgba(239, 68, 68, 0.05);">
+                    <span style="font-weight: 600;">No Code Found:</span> ${displaySecret}
+                </div>
+            `; 
+        }
+    }
+
+    function manualProcessMail(inputId, targetId) {
+        let text = document.getElementById(inputId).value;
+        executeMailCore(text, targetId, false);
+    }
+
+    function autoPasteProcessMail(targetId) {
+        navigator.clipboard.readText().then(text => {
+            executeMailCore(text, targetId, true);
+        }).catch(() => {
+            document.getElementById(targetId).innerHTML = `<div style="color:var(--danger); font-size:11px; text-align:center; padding:8px; border:1px solid var(--danger); border-radius:6px; margin-top:8px;">⚠️ Browser permission denied</div>`;
+        });
+    }
+
+    function executeMailCore(text, targetId, isAuto) {
+        const resultDiv = document.getElementById(targetId);
+        if (!text.trim()) { resultDiv.innerHTML = ``; return; }
+
+        let emails = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g);
+        
+        if (emails && emails.length > 0) {
+            let uniqueEmails = [...new Set(emails)];
+            let html = isAuto ? `<div style="font-size: 9px; color: var(--text-muted); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Text: ${text}</div>` : '';
+
+            uniqueEmails.forEach(email => {
+                html += `
+                    <div class="clickable-data fade-in" style="width: 100%; text-align: center; border-color: var(--primary); padding: 10px; margin-top: 4px; margin-bottom: 4px;" onclick="copyText('${email}', '📧 Mail Copied: ${email}')">
+                        <div style="font-size: 14px; font-weight: 600; color: var(--primary);">${email}</div>
+                    </div>
+                `;
+            });
+            resultDiv.innerHTML = html;
+            if(isAuto) { copyText(uniqueEmails[0], `📧 Auto Copied: ${uniqueEmails[0]}`); }
+        } else {
+            let displaySecret = text.length > 25 ? text.substring(0, 25) + '...' : text;
+            resultDiv.innerHTML = `
+                <div style="color:var(--danger); font-size:10px; text-align:center; margin-top:8px; padding: 8px; border: 1px dashed var(--danger); border-radius: 8px; background: rgba(239, 68, 68, 0.05);">
+                    <span style="font-weight: 600;">No Mail Found:</span> ${displaySecret}
+                </div>
+            `; 
+        }
+    }
+
+    function manualProcess2FA(inputId, targetId) {
+        let secret = document.getElementById(inputId).value.replace(/\s+/g, '').toUpperCase();
+        execute2FACore(secret, targetId, false);
+    }
+
+    function autoPasteProcess2FA(targetId) {
+        navigator.clipboard.readText().then(text => {
+            let secret = text.replace(/\s+/g, '').toUpperCase();
+            execute2FACore(secret, targetId, true);
+        }).catch(() => {
+            document.getElementById(targetId).innerHTML = `<div style="color:var(--danger); font-size:11px; text-align:center; padding:8px; border:1px solid var(--danger); border-radius:6px; margin-top:8px;">⚠️ Browser permission denied</div>`;
+        });
+    }
+
+    function execute2FACore(secret, targetId, isAuto) {
+        const resultDiv = document.getElementById(targetId);
+        if (!secret) { resultDiv.innerHTML = ``; return; }
+
+        let displaySecret = secret.length > 25 ? secret.substring(0, 25) + '...' : secret;
+
+        try {
+            let totp = new OTPAuth.TOTP({ 
+                algorithm: 'SHA1', 
+                digits: 6, 
+                period: 30, 
+                secret: OTPAuth.Secret.fromBase32(secret) 
+            });
+            let code = totp.generate();
+            let pastedKeyHTML = isAuto ? `<div style="font-size: 9px; color: var(--text-muted); margin-bottom: 2px;">Key: ${secret}</div>` : '';
+
+            resultDiv.innerHTML = `
+                <div class="clickable-data fade-in" style="width: 100%; text-align: center; border-color: var(--primary); padding: 12px; margin-top: 8px; margin-bottom: 0;" onclick="copyText('${code}', '🔑 Token Copied: ${code}')">
+                    ${pastedKeyHTML}
+                    <div style="font-size: 20px; font-weight: 700; color: var(--primary); letter-spacing: 3px;">${code}</div>
+                </div>
+            `;
+            if(isAuto) { copyText(code, `🔑 Auto Copied: ${code}`); }
+        } catch { 
+            resultDiv.innerHTML = `
+                <div style="color:var(--danger); font-size:10px; text-align:center; margin-top:8px; padding: 8px; border: 1px dashed var(--danger); border-radius: 8px; background: rgba(239, 68, 68, 0.05);">
+                    <span style="font-weight: 600;">Invalid Key:</span> ${displaySecret}
+                </div>
+            `; 
+        }
+    }
+
+    function getToggleUI(title, funcName, manualId, autoId, resultId) {
+        return `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="font-size: 11px; font-weight: 600; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px;">${title}</div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 10px; color: var(--text-muted); font-weight: 500;">Auto Paste</span>
+                    <label class="switch" style="transform: scale(0.7); transform-origin: right center; margin: 0;">
+                        <input type="checkbox" onchange="${funcName}(this.checked, '${manualId}', '${autoId}', '${resultId}')" ${autoPasteEnabled ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        `;
+    }
+
+    function toggleBoxLogic(containerId, btnId, boxName, inpId, resId) {
+        let container = document.getElementById(containerId); 
+        let btn = document.getElementById(btnId);
+        
+        if (container.style.display === 'none' || container.style.display === '') { 
+            container.style.display = 'block'; 
+            btn.innerText = `- Remove ${boxName}`; 
+        } else { 
+            container.style.display = 'none'; 
+            btn.innerText = `+ Add ${boxName}`; 
+            let inp = document.getElementById(inpId); 
+            if(inp) inp.value = ''; 
+            document.getElementById(resId).innerHTML = ''; 
+        }
+    }
+
+    function toggleFirst2FABox() { toggleBoxLogic('first2FAContainer', 'toggle1st2FABtn', 'Quick 2FA (1) Box', 'secretKeyProfile', 'profile2FAResult'); }
+    function toggleExtra2FABox() { toggleBoxLogic('extra2FAContainer', 'toggle2FABtn', '2nd 2FA Box', 'secretKeyProfile_2', 'profile2FAResult_2'); }
+    function toggleOTPBox() { toggleBoxLogic('otpContainer', 'toggleOTPBtn', 'Quick OTP Box', 'smsTextProfile', 'profileOTPResult'); }
+    function toggleMailBox() { toggleBoxLogic('mailContainer', 'toggleMailBtn', 'Mail Box', 'mailTextProfile', 'profileMailResult'); }
+
+    function getCommonBoxesHTML() {
+        return `
+            <div class="data-card fade-in" id="first2FAContainer" style="display: none; margin-bottom: 5px;">
+                ${getToggleUI('Quick 2FA (1)', 'toggle2FAMode', 'manualProfile2FA', 'autoProfile2FA', 'profile2FAResult')}
+                <div id="manualProfile2FA" style="display: ${autoPasteEnabled ? 'none' : 'block'};">
+                    <input type="text" id="secretKeyProfile" class="input-box" placeholder="PASTE SECRET KEY 1 HERE" oninput="manualProcess2FA('secretKeyProfile', 'profile2FAResult')">
+                </div>
+                <div id="autoProfile2FA" style="display: ${autoPasteEnabled ? 'block' : 'none'};">
+                    <button class="btn btn-primary" onclick="autoPasteProcess2FA('profile2FAResult')">Auto Paste & Decrypt 1</button>
+                </div>
+                <div id="profile2FAResult"></div>
+            </div>
+
+            <div class="data-card fade-in" id="extra2FAContainer" style="display: none; margin-bottom: 5px;">
+                ${getToggleUI('Quick 2FA (2)', 'toggle2FAMode', 'manualProfile2FA_2', 'autoProfile2FA_2', 'profile2FAResult_2')}
+                <div id="manualProfile2FA_2" style="display: ${autoPasteEnabled ? 'none' : 'block'};">
+                    <input type="text" id="secretKeyProfile_2" class="input-box" placeholder="PASTE SECRET KEY 2 HERE" oninput="manualProcess2FA('secretKeyProfile_2', 'profile2FAResult_2')">
+                </div>
+                <div id="autoProfile2FA_2" style="display: ${autoPasteEnabled ? 'block' : 'none'};">
+                    <button class="btn btn-primary" onclick="autoPasteProcess2FA('profile2FAResult_2')">Auto Paste & Decrypt 2</button>
+                </div>
+                <div id="profile2FAResult_2"></div>
+            </div>
+
+            <div class="data-card fade-in" id="otpContainer" style="display: none; margin-bottom: 5px;">
+                ${getToggleUI('Quick OTP', 'toggleOTPMode', 'manualProfileOTP', 'autoProfileOTP', 'profileOTPResult')}
+                <div id="manualProfileOTP" style="display: ${autoPasteEnabled ? 'none' : 'block'};">
+                    <input type="text" id="smsTextProfile" class="input-box" placeholder="PASTE FULL SMS HERE" oninput="manualProcessOTP('smsTextProfile', 'profileOTPResult')">
+                </div>
+                <div id="autoProfileOTP" style="display: ${autoPasteEnabled ? 'block' : 'none'};">
+                    <button class="btn btn-primary" onclick="autoPasteProcessOTP('profileOTPResult')">Auto Paste & Extract</button>
+                </div>
+                <div id="profileOTPResult"></div>
+            </div>
+
+            <div class="data-card fade-in" id="mailContainer" style="display: none; margin-bottom: 5px;">
+                ${getToggleUI('Extract Mail', 'toggleOTPMode', 'manualProfileMail', 'autoProfileMail', 'profileMailResult')}
+                <div id="manualProfileMail" style="display: ${autoPasteEnabled ? 'none' : 'block'};">
+                    <input type="text" id="mailTextProfile" class="input-box" placeholder="PASTE TEXT TO EXTRACT MAIL" oninput="manualProcessMail('mailTextProfile', 'profileMailResult')">
+                </div>
+                <div id="autoProfileMail" style="display: ${autoPasteEnabled ? 'block' : 'none'};">
+                    <button class="btn btn-primary" onclick="autoPasteProcessMail('profileMailResult')">Auto Paste & Extract Mail</button>
+                </div>
+                <div id="profileMailResult"></div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 4px; margin-bottom: 10px; padding: 0 4px;">
+                <span id="toggle1st2FABtn" onclick="toggleFirst2FABox()" style="color: var(--primary); font-size: 11px; cursor: pointer; font-weight: 600; padding: 4px;">+ Add Quick 2FA (1) Box</span>
+                <span id="toggle2FABtn" onclick="toggleExtra2FABox()" style="color: var(--primary); font-size: 11px; cursor: pointer; font-weight: 600; padding: 4px;">+ Add 2nd 2FA Box</span>
+                <span id="toggleOTPBtn" onclick="toggleOTPBox()" style="color: var(--primary); font-size: 11px; cursor: pointer; font-weight: 600; padding: 4px;">+ Add Quick OTP Box</span>
+                <span id="toggleMailBtn" onclick="toggleMailBox()" style="color: var(--primary); font-size: 11px; cursor: pointer; font-weight: 600; padding: 4px;">+ Add Mail Box</span>
+            </div>
+        `;
+    }
+
+    const countryNames = {'bd': 'Bangladesh', 'usa': 'USA', 'uk': 'UK', 'fr': 'France', 'in': 'India', 'cn': 'China'};
+    const contentDiv = document.getElementById('app-content');
+    
+    function renderView(html, title = '') {
+        document.getElementById('page-title').innerText = title;
+        contentDiv.classList.remove("fade-in"); 
+        void contentDiv.offsetWidth; 
+        contentDiv.innerHTML = html; 
+        contentDiv.classList.add("fade-in");
+    }
+
+    function showMainMenu() {
+        renderView(`
+            <div class="data-card">
+                <h3 style="font-size: 14px; margin-bottom: 10px;">Vault Configuration</h3>
+                <input type="text" class="input-box" placeholder="Set global password here..." value="${vaultPassword}" oninput="saveVaultPassword(this.value)">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 0 4px;">
+                    <a href="javascript:void(0)" style="color: var(--primary); font-size: 11px; font-weight: 700; text-decoration: none; letter-spacing: 0.5px;">Contact Developer (JIH4D)</a>
+                    <span onclick="resetUsedHistory()" style="color: var(--danger); font-size: 10.5px; font-weight: 700; cursor: pointer;">🔄 Reset Used Names</span>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 16px;">
+                <button class="btn" onclick="showCustomNameView()">Custom Name</button>
+                <button class="btn" onclick="showSmsExtractor()">One-Line Format</button>
+                <button class="btn" onclick="show2FA()">2FA Core</button>
+                <button class="btn" onclick="showPlatformMenu()">Identity</button>
+            </div>
+        `, 'Dashboard');
+    }
+
+    function showCustomNameView() {
+        renderView(`
+            <p class="desc">Enter a custom name to generate sequential usernames.</p>
+            
+            <div class="data-card">
+                <input type="text" id="customNameInput" class="input-box" placeholder="Enter Custom Name (e.g., John Doe)">
+                <button class="btn btn-primary" style="margin-top: 10px;" onclick="generateCustomIdentity()">Generate Username</button>
+            </div>
+
+            <div class="data-card fade-in" style="text-align:center; margin-bottom: 14px; min-height: 40px; display: none;" id="custom-identity-result"></div>
+
+            ${getCommonBoxesHTML()}
+
+            <div style="margin-top: 10px; width: 100%;">
+                <button class="btn" style="width: 100%;" onclick="showMainMenu()">Back to Hub</button>
+            </div>
+        `, 'Custom Name');
+    }
+
+    function generateCustomIdentity() {
+        let inputVal = document.getElementById('customNameInput').value.trim();
+        let resultDiv = document.getElementById('custom-identity-result');
+        
+        if (!inputVal) {
+            return showToastMessage("⚠️ Please enter a name first");
+        }
+
+        let formattedCounter = String(customCounter).padStart(2, '0');
+        let baseUsername = inputVal.toLowerCase().replace(/\s+/g, '_');
+        let generatedUsername = `${baseUsername}_${formattedCounter}`;
+        
+        customCounter++; 
+        localStorage.setItem('jih4d_custom_counter', customCounter);
+        
+        let resultTextHTML = `
+            <div class="clickable-data fade-in" style="font-size: 16px; width:100%; text-align:center; margin-bottom:8px;" onclick="copyText('${inputVal}', '👤 Name Copied!')">${inputVal}</div>
+            <div class="clickable-data fade-in" style="font-size: 15px; width:100%; text-align:center;" onclick="copyText('${generatedUsername}', '📸 Username Copied!')">${generatedUsername}</div>
+        `;
+        
+        let passwordBlockHTML = vaultPassword ? `
+            <div class="divider fade-in" style="margin: 10px 0;"></div>
+            <div class="fade-in" style="font-size:11px; color:var(--text-muted); margin-bottom:6px; font-weight: 500;">Vault Password</div>
+            <div class="clickable-data fade-in" style="font-size: 13px; width:100%; text-align:center;" onclick="copyText('${vaultPassword.replace(/'/g, "\\'")}', '🔑 Password Copied!')">${vaultPassword}</div>
+        ` : '';
+        
+        resultDiv.style.display = 'block'; 
+        resultDiv.innerHTML = resultTextHTML + passwordBlockHTML;
+    }
+
+    function showSmsExtractor() {
+        renderView(`
+            <p class="desc">Username + Password + Cookies → One Line (Google Sheets)</p>
+
+            <div class="data-card">
+                <div class="input-group">
+                    <input type="text" id="olfUsername" class="input-box" placeholder="Username">
+                </div>
+                <div class="input-group" style="display:flex; gap:8px; align-items:center;">
+                    <input type="password" id="olfPassword" class="input-box" placeholder="Saved Password" style="flex:1;">
+                    <button class="btn" style="width:auto; padding:10px 12px; font-size:12px;" onclick="toggleOlfPassword()">👁</button>
+                </div>
+                <div class="input-group">
+                    <textarea id="olfCookies" class="input-box" placeholder="Paste cookies here" style="min-height:90px; resize:vertical; font-family:Consolas,monospace; font-size:12px;"></textarea>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="olfScriptUrl" class="input-box" placeholder="Google Script URL (https://script.google.com/.../exec)">
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
+                    <button class="btn btn-primary" style="flex:1; min-width:120px;" onclick="olfGenerate()">Generate One-Line</button>
+                    <button class="btn" style="flex:1; min-width:100px;" onclick="olfSavePassword()">Save Pass</button>
+                    <button class="btn" style="flex:1; min-width:100px;" onclick="olfSaveUrl()">Save URL</button>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
+                    <button class="btn" style="flex:1; min-width:100px;" onclick="olfClearPass()">Clear Pass</button>
+                    <button class="btn" style="flex:1; min-width:100px;" onclick="olfCopy()">Copy Output</button>
+                    <button class="btn" style="flex:1; min-width:100px;" onclick="olfDownload()">TXT Download</button>
+                </div>
+
+                <div id="olfStatus" style="font-size:11px; color:var(--primary); margin-top:10px; min-height:16px;"></div>
+
+                <div style="font-size:11px; color:var(--text-muted); margin:12px 0 6px; font-weight:600;">One-line Format (Username|Password|Cookies)</div>
+                <div id="olfOutput" class="clickable-data" style="width:100%; min-height:60px; text-align:left; white-space:pre-wrap; word-break:break-all; font-family:Consolas,monospace; font-size:12px; padding:12px; margin:0;"></div>
+            </div>
+
+            <div style="margin-top: 10px; width: 100%;">
+                <button class="btn" style="width: 100%;" onclick="showMainMenu()">Back to Hub</button>
+            </div>
+        `, 'One-Line Format');
+
+        setTimeout(() => {
+            const savedPass = localStorage.getItem('oneLineFormatterPassword');
+            const savedUrl  = localStorage.getItem('oneLineFormatterScriptUrl');
+            if (savedPass) document.getElementById('olfPassword').value = savedPass;
+            if (savedUrl)  document.getElementById('olfScriptUrl').value = savedUrl;
+            if (savedPass || savedUrl) {
+                const st = document.getElementById('olfStatus');
+                if (st) st.textContent = (savedPass && savedUrl) ? 'Saved password & Script URL loaded.' : (savedPass ? 'Saved password loaded.' : 'Saved Script URL loaded.');
+            }
+        }, 50);
+    }
+
+    // ===== One-Line Formatter helpers =====
+    const OLF_PASS_KEY = "oneLineFormatterPassword";
+    const OLF_URL_KEY  = "oneLineFormatterScriptUrl";
+
+    function olfStatus(msg) {
+        const el = document.getElementById('olfStatus');
+        if (el) el.textContent = msg || '';
+    }
+
+    function toggleOlfPassword() {
+        const inp = document.getElementById('olfPassword');
+        if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function olfSavePassword() {
+        const p = document.getElementById('olfPassword')?.value || '';
+        if (!p) { olfStatus('Enter a password first.'); return; }
+        try {
+            localStorage.setItem(OLF_PASS_KEY, p);
+            olfStatus('Password saved.');
+        } catch (e) {
+            olfStatus('Cannot save password (storage blocked).');
+        }
+    }
+
+    function olfSaveUrl() {
+        const url = (document.getElementById('olfScriptUrl')?.value || '').trim();
+        if (!url) { olfStatus('Enter Script URL first.'); return; }
+        try {
+            localStorage.setItem(OLF_URL_KEY, url);
+            olfStatus('Script URL saved.');
+        } catch (e) {
+            olfStatus('Cannot save URL (storage blocked).');
+        }
+    }
+
+    function olfClearPass() {
+        try { localStorage.removeItem(OLF_PASS_KEY); } catch (e) {}
+        const inp = document.getElementById('olfPassword');
+        if (inp) inp.value = '';
+        olfStatus('Saved password cleared.');
+    }
+
+    async function olfGenerate() {
+        const u = (document.getElementById('olfUsername')?.value || '').trim();
+        const c = (document.getElementById('olfCookies')?.value || '').trim();
+        let p = document.getElementById('olfPassword')?.value || '';
+        if (!p) {
+            try { p = localStorage.getItem(OLF_PASS_KEY) || ''; } catch (e) {}
+        }
+        let scriptUrl = (document.getElementById('olfScriptUrl')?.value || '').trim();
+        if (!scriptUrl) {
+            try { scriptUrl = localStorage.getItem(OLF_URL_KEY) || ''; } catch (e) {}
+        }
+
+        if (!u || !p || !c) {
+            olfStatus('Username, password এবং cookies—সবগুলো পূরণ করুন.');
+            return;
+        }
+        if (!scriptUrl) {
+            olfStatus('Google Script URL দিন।');
+            return;
+        }
+
+        const oneLine = u + '|' + p + '|' + c;
+        const outEl = document.getElementById('olfOutput');
+        if (outEl) outEl.textContent = oneLine;
+
+        olfStatus('Generating & sending to Google Sheets...');
+        try {
+            await fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                redirect: 'follow',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ oneLine: oneLine })
+            });
+            olfStatus('One-line generated + Google Sheets-এ পাঠানো হয়েছে ✓');
+        } catch (err) {
+            olfStatus('Generated, কিন্তু Sheets-এ পাঠাতে সমস্যা হয়েছে।');
+            console.error(err);
+        }
+    }
+
+    async function olfCopy() {
+        const out = (document.getElementById('olfOutput')?.textContent || '').trim();
+        if (!out) { olfStatus('আগে Generate করুন.'); return; }
+        try {
+            await navigator.clipboard.writeText(out);
+            olfStatus('Output copied.');
+            showToastMessage('✅ Output Copied!');
+        } catch (e) {
+            olfStatus('Copy failed. Output manually copy করুন.');
+        }
+    }
+
+    function olfDownload() {
+        const out = (document.getElementById('olfOutput')?.textContent || '').trim();
+        if (!out) { olfStatus('আগে Generate করুন.'); return; }
+        const blob = new Blob([out + '\n'], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'one-line-format.txt';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        olfStatus('TXT file downloaded.');
+    }
+
+    function show2FA() {
+        renderView(`
+            <p class="desc">Extract security tokens easily.</p>
+            
+            <div class="data-card">
+                ${getToggleUI('Decrypt Token', 'toggle2FAMode', 'manualMain2FA', 'autoMain2FA', 'totpResult')}
+                <div id="manualMain2FA" style="display: ${autoPasteEnabled ? 'none' : 'block'};">
+                    <input type="text" id="secretKey" class="input-box" placeholder="PASTE SECRET KEY HERE" oninput="manualProcess2FA('secretKey', 'totpResult')">
+                </div>
+                <div id="autoMain2FA" style="display: ${autoPasteEnabled ? 'block' : 'none'};">
+                    <button class="btn btn-primary" onclick="autoPasteProcess2FA('totpResult')">Auto Paste & Decrypt</button>
+                </div>
+                <div id="totpResult"></div>
+            </div>
+
+            <div style="margin-top: 10px; width: 100%;">
+                <button class="btn" style="width: 100%;" onclick="showMainMenu()">Back to Hub</button>
+            </div>
+        `, '2FA Decryptor');
+    }
+
+    let selPlat = '', selCoun = '';
+
+    function showPlatformMenu() {
+        renderView(`
+            <p class="desc">Select target platform.</p>
+            <div class="grid-3">
+                <button class="btn btn-primary" onclick="selectPlatform('fb')">Facebook</button>
+                <button class="btn btn-primary" onclick="selectPlatform('ig')">Instagram</button>
+                <button class="btn btn-primary" onclick="selectPlatform('tt')">TikTok</button>
+            </div>
+            
+            <div style="margin-top: 14px; width: 100%;">
+                <button class="btn" style="width: 100%;" onclick="showMainMenu()">Back to Hub</button>
+            </div>
+        `, 'Identity Generator');
+    }
+
+    function selectPlatform(p) {
+        selPlat = p;
+        let regionHTML = p === 'tt' 
+            ? `<div class="grid-3"><button class="btn" onclick="selectCountry('bd')">BGD</button></div>`
+            : `<div class="grid-3">
+                <button class="btn" onclick="selectCountry('bd')">BGD</button>
+                <button class="btn" onclick="selectCountry('in')">IND</button>
+                <button class="btn" onclick="selectCountry('cn')">CHN</button>
+                <button class="btn" onclick="selectCountry('usa')">USA</button>
+                <button class="btn" onclick="selectCountry('uk')">GBR</button>
+                <button class="btn" onclick="selectCountry('fr')">FRA</button>
+               </div>`;
+
+        renderView(`
+            <p class="desc">Choose geographic region.</p>
+            ${regionHTML}
+            <div style="margin-top: 14px; width: 100%;">
+                <button class="btn" style="width: 100%;" onclick="showPlatformMenu()">Back</button>
+            </div>
+        `, 'Select Locale');
+    }
+
+    function selectCountry(c) {
+        selCoun = c;
+        let genderHTML = selPlat === 'tt'
+            ? `<div class="grid-2"><button class="btn" onclick="initIdentityView('male')">Male</button></div>`
+            : `<div class="grid-2">
+                <button class="btn" onclick="initIdentityView('male')">Male</button>
+                <button class="btn" onclick="initIdentityView('female')">Female</button>
+               </div>`;
+
+        renderView(`
+            <p class="desc">Choose identity type.</p>
+            ${genderHTML}
+            <div style="margin-top: 14px; width: 100%;">
+                <button class="btn" style="width: 100%;" onclick="selectPlatform(selPlat)">Back</button>
+            </div>
+        `, 'Select Gender');
+    }
+
+    function getUniqueFullName(gender) {
+        let firstCategory = `${gender}_first`;
+        let firstList = window.accountData[selCoun][firstCategory];
+        let lastList = window.accountData[selCoun]["last"];
+        const usedSet = getUsedSet();
+
+        if (!firstList || firstList.length === 0 || !lastList || lastList.length === 0) {
+            return null;
+        }
+
+        // Pop the next sequential First Name & find a Last Name so Full Name is 100% unique
+        let fVal = firstList.shift();
+        let fName = typeof fVal === 'object' && fVal !== null ? fVal.name : fVal;
+        let fId = typeof fVal === 'object' && fVal !== null ? fVal.id : null;
+
+        let chosenLastIndex = 0;
+        for (let i = 0; i < lastList.length; i++) {
+            let candidateL = typeof lastList[i] === 'object' && lastList[i] !== null ? lastList[i].name : lastList[i];
+            let pairKey = `${selCoun}_${gender}_pair_${fName.toLowerCase()}_${candidateL.toLowerCase()}`;
+            if (!usedSet.has(pairKey)) {
+                chosenLastIndex = i;
+                break;
+            }
+        }
+
+        let lVal = lastList.splice(chosenLastIndex, 1)[0];
+        let lName = typeof lVal === 'object' && lVal !== null ? lVal.name : lVal;
+        let lId = typeof lVal === 'object' && lVal !== null ? lVal.id : null;
+
+        // Mark this exact Full Name as used permanently
+        markItemAsUsed(`${selCoun}_${gender}_pair_${fName.toLowerCase()}_${lName.toLowerCase()}`);
+
+        // Keep source names in Firestore. Used state is tracked locally; generation must not delete source data.
+
+        return { f: fName, l: lName };
+    }
+
+    function getSequentialUsername() {
+        let userList = window.accountData[selCoun]["username"];
+        if(!userList || userList.length === 0) {
+            return null;
+        }
+
+        let userVal = userList.shift();
+        let userName = typeof userVal === 'object' && userVal !== null ? userVal.name : userVal;
+        let userId = typeof userVal === 'object' && userVal !== null ? userVal.id : null;
+
+        markItemAsUsed(`${selCoun}_user_${userName}`);
+
+        // Keep source usernames in Firestore. Used state is tracked locally; generation must not delete source data.
+
+        return userName;
+    }
+
+    function generateIdentityData(g) {
+        let nameObj = getUniqueFullName(g);
+        
+        let firstCount = window.accountData[selCoun][`${g}_first`] ? window.accountData[selCoun][`${g}_first`].length : 0;
+        let lastCount = window.accountData[selCoun]["last"] ? window.accountData[selCoun]["last"].length : 0;
+        let userCount = window.accountData[selCoun]["username"] ? window.accountData[selCoun]["username"].length : 0;
+        
+        let statsBadgeHTML = `
+            <div class="fade-in" style="font-size: 9px; color: var(--primary); margin-bottom: 12px; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 6px; display: inline-block; border: 1px solid var(--card-border); letter-spacing: 0.5px;">
+                DB: ${firstCount} First | ${lastCount} Last | ${userCount} Users
+            </div><br>
+        `;
+
+        if (!nameObj) {
+            document.getElementById('identity-data-box').innerHTML = statsBadgeHTML + `
+                <div style="color: var(--danger); font-size: 12px; font-weight: 600; padding: 12px;">
+                    ⚠️️ ৩,০০০ নামই ব্যবহার হয়ে গেছে! Dashboard থেকে Reset Used Names বাটনে ক্লিক করুন।
+                </div>
+            `;
+            return;
+        }
+
+        let { f, l } = nameObj;
+        let resultTextHTML = statsBadgeHTML;
+
+        if (selPlat === 'fb') {
+            let textToCopy = `${f} ${l}`;
+            resultTextHTML += `
+                <div class="clickable-data fade-in" style="font-size: 16px; width:100%; text-align:center; margin-bottom:8px;" onclick="copyText('${textToCopy}', '👤 Name Copied!')">${textToCopy}</div>
+                <div style="display:flex; gap:8px;" class="fade-in">
+                    <div class="clickable-data" style="flex:1; text-align:center;" onclick="copyText('${f}', '👤 First Name Copied!')">${f}</div>
+                    <div class="clickable-data" style="flex:1; text-align:center;" onclick="copyText('${l}', '👤 Last Name Copied!')">${l}</div>
+                </div>
+            `;
+        } else if (selPlat === 'ig') {
+            let igUser = getSequentialUsername();
+            if (!igUser) {
+                let formattedCounter = String(igCounter).padStart(2, '0');
+                igUser = `${f.toLowerCase()}_${l.toLowerCase()}_${formattedCounter}`;
+                igCounter++; 
+                localStorage.setItem('jih4d_ig_counter', igCounter);
+            }
+            let fullName = `${f} ${l}`;
+            
+            resultTextHTML += `
+                <div class="clickable-data fade-in" style="font-size: 16px; width:100%; text-align:center; margin-bottom:8px;" onclick="copyText('${fullName}', '👤 Name Copied!')">${fullName}</div>
+                <div class="clickable-data fade-in" style="font-size: 15px; width:100%; text-align:center;" onclick="copyText('${igUser}', '📸 Username Copied!')">${igUser}</div>
+            `;
+        } else if (selPlat === 'tt') {
+            let fullName = `${f} ${l}`;
+            let ttName = getSequentialUsername() || `${f.toLowerCase()}_${l.toLowerCase()}_tt`;
+            
+            resultTextHTML += `
+                <div class="clickable-data fade-in" style="font-size: 16px; width:100%; text-align:center; margin-bottom:8px;" onclick="copyText('${fullName}', '👤 Name Copied!')">${fullName}</div>
+                <div class="fade-in" style="font-size:11px; color:var(--text-muted); margin-bottom:4px; font-weight: 500;">Tiktok Username</div>
+                <div class="clickable-data fade-in" style="font-size: 15px; width:100%; text-align:center;" onclick="copyText('${ttName}', '🎵 Tiktok Username Copied!')">${ttName}</div>
+            `;
+        }
+
+        let passwordBlockHTML = vaultPassword ? `
+            <div class="divider fade-in" style="margin: 10px 0;"></div>
+            <div class="fade-in" style="font-size:11px; color:var(--text-muted); margin-bottom:6px; font-weight: 500;">Vault Password</div>
+            <div class="clickable-data fade-in" style="font-size: 13px; width:100%; text-align:center;" onclick="copyText('${vaultPassword.replace(/'/g, "\\'")}', '🔑 Password Copied!')">${vaultPassword}</div>
+        ` : '';
+
+        document.getElementById('identity-data-box').innerHTML = resultTextHTML + passwordBlockHTML;
+    }
+
+    function initIdentityView(g) {
+        let pageDynamicTitle = `${countryNames[selCoun]} - ${g.charAt(0).toUpperCase() + g.slice(1)}`;
+        
+        renderView(`
+            <div class="data-card" style="text-align:center; margin-bottom: 14px; min-height: 80px;" id="identity-data-box"></div>
+            
+            ${getCommonBoxesHTML()}
+
+            <div style="margin-top: 10px; width: 100%;">
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="generateIdentityData('${g}')">Generate Again</button>
+                <div class="grid-2">
+                    <button class="btn" onclick="selectCountry(selCoun)">Back</button>
+                    <button class="btn" onclick="showMainMenu()">Hub</button>
+                </div>
+            </div>
+        `, pageDynamicTitle);
+        
+        generateIdentityData(g);
+    }
+
+    showMainMenu();
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB50Puqo5nr7-1aoT-znhHyBkvD9ui0XhU",
+        authDomain: "authgenix.firebaseapp.com",
+        projectId: "authgenix",
+        storageBucket: "authgenix.firebasestorage.app",
+        messagingSenderId: "959487638243",
+        appId: "1:959487638243:web:72d57f128835f354b763d6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    
+    window.firebaseDB = db;
+    window.firebaseDeleteDoc = deleteDoc;
+    window.firebaseDoc = doc;
+
+    async function fetchNamesFromFirebase() {
+        try {
+            const querySnapshot = await getDocs(collection(db, "names"));
+            let allDocs = [];
+            
+            querySnapshot.forEach((docSnap) => {
+                allDocs.push({ id: docSnap.id, ...docSnap.data() });
+            });
+
+            allDocs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+            // Rebuild from seed + saved used-history before adding Firestore rows, avoiding duplicates on refresh/login.
+            window.accountData = initCleanAccountData();
+
+            allDocs.forEach((data) => {
+                if(window.accountData[data.country] && window.accountData[data.country][data.category]) {
+                    window.accountData[data.country][data.category].unshift({ id: data.id, name: data.name });
+                }
+            });
+        } catch (error) {
+            console.error("Error fetching names from Firebase: ", error);
+        }
+    }
+    fetchNamesFromFirebase();
+
+    const loginSection = document.getElementById('loginSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    const adminDataList = document.getElementById('adminDataList');
+    const recordCountText = document.getElementById('recordCountText');
+    const addDataBtn = document.getElementById('addDataBtn');
+    const filterPlatform = document.getElementById('filterPlatform');
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            loginSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            fetchNamesFromFirebase();
+            loadAdminData();
+        } else {
+            loginSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+        }
+    });
+
+    filterPlatform.addEventListener('change', () => loadAdminData());
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const email = document.getElementById('emailInput').value;
+        const pass = document.getElementById('passwordInput').value;
+        signInWithEmailAndPassword(auth, email, pass).catch(err => {
+            document.getElementById('errorMsg').innerText = "❌ " + err.message;
+        });
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+    addDataBtn.addEventListener('click', async () => {
+        const platform = document.getElementById('platformSelect').value;
+        const country = document.getElementById('countrySelect').value;
+        const category = document.getElementById('categorySelect').value;
+        const fileInput = document.getElementById('fileInput').files[0];
+
+        if(!fileInput) {
+            return alert("⚠️ Please select a .txt file first!");
+        }
+
+        addDataBtn.innerText = "Processing Data...";
+        addDataBtn.disabled = true;
+
+        try {
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const fileContent = e.target.result;
+                const lines = fileContent.split(/\r?\n/).filter(line => line.trim() !== '');
+                await processBulkData(lines, platform, country, category);
+            };
+            reader.readAsText(fileInput);
+        } catch (e) {
+            alert("Error: " + e.message);
+            resetButton();
+        }
+    });
+
+    async function processBulkData(namesArray, platform, country, category) {
+        try {
+            let batch = writeBatch(db);
+            let operationsCounter = 0;
+            let addedCount = 0;
+
+            for (let i = 0; i < namesArray.length; i++) {
+                const fullName = namesArray[i].trim();
+                if (!fullName) continue;
+
+                if (category === 'male_full' || category === 'female_full') {
+                    const parts = fullName.split(/\s+/);
+                    if (parts.length >= 2) {
+                        const firstName = parts[0];
+                        const lastName = parts.slice(1).join(' '); 
+                        const firstCategory = category === 'male_full' ? 'male_first' : 'female_first';
+
+                        batch.set(doc(collection(db, "names")), { platform, country, category: firstCategory, name: firstName });
+                        operationsCounter++;
+
+                        batch.set(doc(collection(db, "names")), { platform, country, category: 'last', name: lastName });
+                        operationsCounter++;
+                        addedCount++;
+                    } else {
+                        const firstCategory = category === 'male_full' ? 'male_first' : 'female_first';
+                        batch.set(doc(collection(db, "names")), { platform, country, category: firstCategory, name: fullName });
+                        operationsCounter++;
+                        addedCount++;
+                    }
+                } else {
+                    batch.set(doc(collection(db, "names")), { platform, country, category, name: fullName });
+                    operationsCounter++;
+                    addedCount++;
+                }
+
+                if (operationsCounter >= 400) {
+                    await batch.commit();
+                    batch = writeBatch(db);
+                    operationsCounter = 0;
+                }
+            }
+
+            if (operationsCounter > 0) {
+                await batch.commit();
+            }
+
+            alert(`✅ Successfully added ${addedCount} records to the database!`);
+            document.getElementById('fileInput').value = '';
+            loadAdminData(); 
+            fetchNamesFromFirebase(); 
+        } catch (error) {
+            alert("Upload Error: " + error.message);
+        }
+        resetButton();
+    }
+
+    function resetButton() {
+        addDataBtn.innerText = "Upload Database";
+        addDataBtn.disabled = false;
+    }
+
+    async function loadAdminData() {
+        adminDataList.innerHTML = '<p style="font-size: 12px; color: var(--text-muted); margin-top: 20px;">Fetching records...</p>';
+        window.currentFilteredDocIds = [];
+        
+        try {
+            const selectedFilter = filterPlatform.value;
+            const querySnapshot = await getDocs(collection(db, "names"));
+            
+            let html = "";
+            let count = 0;
+
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const itemPlatform = data.platform || 'all'; 
+
+                if (selectedFilter !== 'all_view' && itemPlatform !== selectedFilter) return;
+
+                count++;
+                window.currentFilteredDocIds.push(docSnap.id);
+
+                let platLabel = 'GLOBAL';
+                let platColor = '#a59fb3';
+                
+                if(itemPlatform === 'fb') { platLabel = 'FB'; platColor = '#3b82f6'; }
+                else if(itemPlatform === 'ig') { platLabel = 'IG'; platColor = '#e62e5c'; }
+                else if(itemPlatform === 'tt') { platLabel = 'TT'; platColor = '#10b981'; }
+
+                html += `
+                    <div class="admin-data-card">
+                        <div class="admin-data-info">
+                            <span class="admin-data-name">${data.name}</span>
+                            <span class="admin-data-meta">
+                                <span style="color: ${platColor}; border: 1px solid ${platColor}; padding: 1px 4px; border-radius: 4px; font-size: 9px;">${platLabel}</span> 
+                                ${data.country.toUpperCase()} • ${data.category.replace('_', ' ').toUpperCase()}
+                            </span>
+                        </div>
+                        <button class="admin-delete-btn" onclick="deleteAdminData('${docSnap.id}')">Delete</button>
+                    </div>
+                `;
+            });
+
+            recordCountText.innerText = count;
+            adminDataList.innerHTML = html || "<p style='font-size: 12px; color: var(--text-muted); margin-top: 20px; text-align: center;'>No records found.</p>";
+            
+            const deleteAllBtn = document.getElementById('deleteAllBtn');
+            if(count > 0) {
+                deleteAllBtn.classList.remove('hidden');
+            } else {
+                deleteAllBtn.classList.add('hidden');
+            }
+
+        } catch (e) {
+            adminDataList.innerHTML = `<p style="color:var(--danger); font-size: 12px;">Error: ${e.message}</p>`;
+        }
+    }
+
+    window.deleteAdminData = async function(docId) {
+        if(confirm("Are you sure you want to delete this record?")) {
+            await deleteDoc(doc(db, "names", docId));
+            loadAdminData(); 
+            fetchNamesFromFirebase();
+        }
+    }
+
+    window.deleteAllFilteredData = async function() {
+        if (window.currentFilteredDocIds.length === 0) return;
+        
+        if(confirm(`Are you sure you want to delete all ${window.currentFilteredDocIds.length} visible records? This action cannot be undone.`)) {
+            
+            const deleteAllBtn = document.getElementById('deleteAllBtn');
+            deleteAllBtn.innerHTML = "Deleting...";
+            deleteAllBtn.disabled = true;
+
+            try {
+                let batch = writeBatch(db);
+                let opCount = 0;
+                let totalDeleted = 0;
+
+                for (let i = 0; i < window.currentFilteredDocIds.length; i++) {
+                    const docId = window.currentFilteredDocIds[i];
+                    batch.delete(doc(db, "names", docId));
+                    opCount++;
+                    totalDeleted++;
+
+                    if (opCount === 500) {
+                        await batch.commit();
+                        batch = writeBatch(db);
+                        opCount = 0;
+                    }
+                }
+                
+                if (opCount > 0) {
+                    await batch.commit();
+                }
+                
+                alert(`✅ Successfully deleted ${totalDeleted} records.`);
+                loadAdminData(); 
+                fetchNamesFromFirebase();
+            } catch (error) {
+                alert("Error deleting records: " + error.message);
+            } finally {
+                deleteAllBtn.innerHTML = "🗑️ Delete All";
+                deleteAllBtn.disabled = false;
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
